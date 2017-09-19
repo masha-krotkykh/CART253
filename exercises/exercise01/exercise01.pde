@@ -16,7 +16,7 @@ int circleX;
 int circleY;
 int circleVX;
 int circleVY;
-// Declaring variables (presumably for the circle position and velocity)
+// Declaring variables (presumably for the circle position).
 
 
 void setup() {
@@ -24,10 +24,10 @@ void setup() {
 // Setting window size to 640 x 480px
   circleX = width/2;
   circleY = height/2;
-// Setting the starting position of the circle to the middle of the window by assigning values to variables CircleX and circleY.
+// Assigning values to variables CircleX and circleY to be the center of the window.
   circleVX = CIRCLE_SPEED;
   circleVY = CIRCLE_SPEED;
-// Setting the circle velocity to 7 (CIRCLE_SPEED)
+// Setting circleVX and circleVY to 7 (CIRCLE_SPEED)
   stroke(STROKE_COLOR);
 // Seting stroke colour to the value of STROKE_COLOR (pink)
   fill(NO_CLICK_FILL_COLOR);
