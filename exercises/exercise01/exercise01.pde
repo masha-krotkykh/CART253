@@ -20,12 +20,15 @@ int circleVY;
 
 float currentCircleSize = CIRCLE_SIZE - 20;
 float growth = 0.1;
-// *CHANGED* Added currentCircleSize variable and growth variable
-
-
+// *CHANGED* Added currentCircleSize variable and growth variable to be able to resize the circle
+int currentColor = NO_CLICK_FILL_COLOR;
+int colorChange = 1;
+//*CHANGED* Added currentColor and colorChange variables to be make it possible for the circle to change its colour 
+int speedChange = 2;
+//*CHANGED* Added a variable to be able to change the speed
 
 void setup() {
-  size(640, 480);
+  size(380, 800);
 // Setting window size to 640 x 480px
   circleX = width/2;
   circleY = height/2;
@@ -35,33 +38,45 @@ void setup() {
 // Setting circleVX and circleVY to 7 (CIRCLE_SPEED)
   stroke(STROKE_COLOR);
 // Seting stroke colour to the value of STROKE_COLOR (pink)
-  fill(NO_CLICK_FILL_COLOR);
+  fill(currentColor);
 // Setting circle fill color to the value of NO_CLICK_FILL_COLOR (darker pink)
   background(BACKGROUND_COLOR);
 // Seting stroke colour to the value of BACKGROUND_COLOR (pink)
 }
 
 void draw() {
-    if (dist(mouseX, mouseY, circleX, circleY) < currentCircleSize/2) {
+  if (dist(mouseX, mouseY, circleX, circleY) < currentCircleSize/2) {
     fill(CLICK_FILL_COLOR);
-// *CHANGED* CIRCLE_SIZE to currentCircleSize
   }
-  
+// *CHANGED* CIRCLE_SIZE to currentCircleSize  
 // If distance between the mouse pointer and the future circle center is less than 1/2 of the circle size 
 // (i.e. if the pointer is inside the future circle) sets fill to the value of CLICK_FILL_COLOR (blue)
-  else {
-    fill(NO_CLICK_FILL_COLOR);
+    else {
+      if (keyPressed) {
+        fill(currentColor);
+      }
+//*CHANGED* On pressing mouse button every new circle will currentColor
+      else {
+      fill(NO_CLICK_FILL_COLOR);
+      }  
 // If the mouse pointer is outside the future circle, sets fill to the value of NO_CLICK_FILL_COLOR (darker pink)
   }
-  ellipse(circleX, circleY, currentCircleSize, currentCircleSize);
- // *CHANGED* CIRCLE_SIZE to currentCircleSize
-  
+    
+    ellipse(circleX, circleY, currentCircleSize, currentCircleSize);
+// *CHANGED* CIRCLE_SIZE to currentCircleSize
+
   circleX += circleVX;
   circleY += circleVY;
+  
+  currentColor = currentColor + colorChange;
+//*CHANGED* currentColor will change every new instance
+ 
+
 // Draws the first circle at the starting position with the coordinates of circleX and circleY (middle of the screen) 
 // and every next circle with the increment of circleVX on X-axis and circleVY on Y-axis (both are set to CIRCLE_SPEED which is 7)
 // So every new circle will be drawn 7 pixels to the right and 7 pixels down.
-  if (circleX + currentCircleSize/2 > width || circleX - currentCircleSize/2 < 0) {
+  
+  if ((circleX + currentCircleSize/2 > width) || (circleX - currentCircleSize/2 < 0)) {
     circleVX = -circleVX;
   }
 // When the circle's right outermost point reaches the right margin of the window OR its left outermost point reaches the left margin of the window,
@@ -70,9 +85,10 @@ void draw() {
   if (circleY + currentCircleSize/2 > height || circleY - currentCircleSize/2 < 0) {
     circleVY = -circleVY;
   }
+
 // Same in vertical direction, when the circle reaches the top or the bottom of the window
 // *CHANGED* CIRCLE_SIZE to currentCircleSize
-  currentCircleSize = currentCircleSize + growth;
+    currentCircleSize = currentCircleSize + growth;
     if (currentCircleSize >= 100 || currentCircleSize <= 20) {
       growth = -growth;
     }
@@ -81,6 +97,15 @@ void draw() {
 
 void mousePressed() {
   background(BACKGROUND_COLOR);
+}
+
+void keyReleased() {
+    circleVX = circleVX - speedChange;
+    circleVY = circleVY + speedChange; 
+    if (circleVX>25 || circleVX<-25 || circleVY>25 || circleVY<-25){
+      speedChange=-speedChange;
+    }
+//*CHANGED* on key release speed (and direction) change 
 }
 
 // On pressing mouse button fill the background erasing previous istances of the circle
