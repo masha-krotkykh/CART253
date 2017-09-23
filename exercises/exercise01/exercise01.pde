@@ -105,7 +105,7 @@ void keyReleased() {
     if (circleVX>25 || circleVX<-25 || circleVY>25 || circleVY<-25){
       speedChange=-speedChange;
     }
-//*CHANGED* on key release speed (and direction) change 
+//*CHANGED* on key release speed (and trajectory) change 
 }
 
 // On pressing mouse button fill the background erasing previous istances of the circle
