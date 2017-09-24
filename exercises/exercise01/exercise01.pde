@@ -27,6 +27,11 @@ int colorChange = 1;
 int speedChange = 2;
 //*CHANGED* Added a variable to be able to change the speed
 
+int buttonY1;
+int buttonX2;
+int buttonY2;
+//*CHANGED* New variables for the restart button
+
 void setup() {
   size(380, 800);
 // Setting window size to 640 x 480px
@@ -42,7 +47,13 @@ void setup() {
 // Setting circle fill color to the value of NO_CLICK_FILL_COLOR (darker pink)
   background(BACKGROUND_COLOR);
 // Seting stroke colour to the value of BACKGROUND_COLOR (pink)
+
+buttonX1 = (width/2 - 25);
+buttonY1 = (height - 50);
+buttonX2 = (width/2 + 25);
+buttonY2 = (height - 15);
 }
+//*CHANGED* Coordinates for the restart button
 
 void draw() {
   if (dist(mouseX, mouseY, circleX, circleY) < currentCircleSize/2) {
@@ -52,10 +63,10 @@ void draw() {
 // If distance between the mouse pointer and the future circle center is less than 1/2 of the circle size 
 // (i.e. if the pointer is inside the future circle) sets fill to the value of CLICK_FILL_COLOR (blue)
     else {
-      if (keyPressed) {
+      if (mousePressed) {
         fill(currentColor);
       }
-//*CHANGED* On pressing mouse button every new circle will currentColor
+//*CHANGED* On pressing mouse button every new circle will be currentColor
       else {
       fill(NO_CLICK_FILL_COLOR);
       }  
@@ -93,11 +104,28 @@ void draw() {
       growth = -growth;
     }
 // *CHANGED* Every new circle is 0.1 bigger (growth variable) until the size reaches 100 then every new circle is 0.1 smaller until it reaches 20
+  if (mouseX > buttonX1 && mouseY > buttonY1 && mouseX < buttonX2 && mouseY < buttonY2 && mousePressed) {
+    restart = true;
+  }
+  else {
+    restart = false;
+  }
+  if (restart) {
+    background(BACKGROUND_COLOR);
+  }
+//*CHANGED* condition all previous instances of the circle will disappear only if the reset button pressed  
+  fill(0);
+  rectMode(CORNERS);
+  rect(buttonX1,buttonY1,buttonX2,buttonY2);
+  line(buttonX2,buttonY1,buttonX1,buttonY2);
+  line(buttonX1,buttonY1,buttonX2,buttonY2);
+//*CHANGED* the reset button
+
 }
 
-void mousePressed() {
-  background(BACKGROUND_COLOR);
-}
+// void mousePressed() {
+//  background(BACKGROUND_COLOR);
+//}
 
 void keyReleased() {
     circleVX = circleVX - speedChange;
@@ -105,7 +133,7 @@ void keyReleased() {
     if (circleVX>25 || circleVX<-25 || circleVY>25 || circleVY<-25){
       speedChange=-speedChange;
     }
-//*CHANGED* on key release speed (and direction) change 
+//*CHANGED* on key release speed (and trajectory) change 
 }
 
 // On pressing mouse button fill the background erasing previous istances of the circle
