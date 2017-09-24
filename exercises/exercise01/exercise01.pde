@@ -27,6 +27,8 @@ int colorChange = 1;
 int speedChange = 2;
 //*CHANGED* Added a variable to be able to change the speed
 
+boolean restart = false;
+int buttonX1;
 int buttonY1;
 int buttonX2;
 int buttonY2;
