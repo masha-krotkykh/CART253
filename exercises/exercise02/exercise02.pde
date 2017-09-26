@@ -20,7 +20,10 @@ int ballVX;
 int ballVY;
 int ballSpeed = 5;
 int ballSize = 16;
-color ballColor = color(255);
+int r = 255;
+int g = 255;
+int b = 255;
+color ballColor = color(r,g,b);
 
 void setup() {
   size(640, 480);
@@ -112,7 +115,8 @@ void drawBall() {
 void handleBallHitPaddle() {
   if (ballOverlapsPaddle()) {
     ballY = paddleY - paddleHeight/2 - ballSize/2;
-    ballVY = -ballVY;
+//*CHANGED* Each time the ball hits the paddle it moves 1 increment faster.    
+    ballVY = -ballVY - 1;
   }
 }
 
