@@ -1,3 +1,4 @@
+// 
 color backgroundColor = color(0);
 
 int numStatic = 1000;
@@ -28,12 +29,14 @@ void setup() {
   setupBall();
 }
 
+//Sets up padle at the bottom center of the window
 void setupPaddle() {
   paddleX = width/2;
   paddleY = height - paddleHeight;
   paddleVX = 0;
 }
 
+//Sets up the starting position of the ball in the center of the window
 void setupBall() {
   ballX = width/2;
   ballY = height/2;
@@ -41,6 +44,8 @@ void setupBall() {
   ballVY = ballSpeed;
 }
 
+//Redraws the background to clean the window from previous instances of ball, paddle and static
+//Redraws new instance of the ball, paddle and static by calling their functions
 void draw() {
   background(backgroundColor);
 
@@ -53,6 +58,10 @@ void draw() {
   drawBall();
 }
 
+//Function to draw static noise. The positon of static is generated randomly within the size 
+//of the window of a random size with sides between 1 and 3(staticSizeMin and staticSizeMax).
+//This happens while the condition of i instances being smaller than 1000 (numStatic), ading 
+//one additional instance every time a loop completes.
 void drawStatic() {
   for (int i = 0; i < numStatic; i++) {
    float x = random(0,width);
@@ -63,11 +72,16 @@ void drawStatic() {
   }
 }
 
+//Calls new instance of paddle at the new position which is starting position + velocity
+//(paddleVX) which is 0 by default. The movement is constrained within the width of the window.
 void updatePaddle() {
   paddleX += paddleVX;  
   paddleX = constrain(paddleX,0+paddleWidth/2,width-paddleWidth/2);
 }
 
+//Calls the new instance of the ball at the new position which is its starting poition + velocity
+//(ballVX) on X-axis and (ballVY) on Y-axis. By default both are equal 5 (ballSpeed). Calls functions handleBallHitPaddle(),
+//handleBallHitWall() and handleBallOffBottom().
 void updateBall() {
   ballX += ballVX;
   ballY += ballVY;
@@ -77,6 +91,7 @@ void updateBall() {
   handleBallOffBottom();
 }
 
+//Draws paddle at the position defined earlier (bottom center of the window).
 void drawPaddle() {
   rectMode(CENTER);
   noStroke();
@@ -84,6 +99,7 @@ void drawPaddle() {
   rect(paddleX, paddleY, paddleWidth, paddleHeight);
 }
 
+//Draws white "ball" in the center of the window of the size defined earlier (16x16).
 void drawBall() {
   rectMode(CENTER);
   noStroke();
@@ -91,6 +107,8 @@ void drawBall() {
   rect(ballX, ballY, ballSize, ballSize);
 }
 
+//Function that deals with the scenario where the ball hits the paddle. If condition of ballOverlapsePaddle is true,
+//the ball changes its direction on Y-axis and its starting Y-position will be right above the paddle. 
 void handleBallHitPaddle() {
   if (ballOverlapsPaddle()) {
     ballY = paddleY - paddleHeight/2 - ballSize/2;
@@ -98,6 +116,7 @@ void handleBallHitPaddle() {
   }
 }
 
+//Returns a true or false value for ballOverlapsePaddle checking if the condition of the ball hitting the paddle is met. The condition is false by default
 boolean ballOverlapsPaddle() {
   if (ballX - ballSize/2 > paddleX - paddleWidth/2 && ballX + ballSize/2 < paddleX + paddleWidth/2) {
     if (ballY > paddleY - paddleHeight/2) {
@@ -107,6 +126,8 @@ boolean ballOverlapsPaddle() {
   return false;
 }
 
+//Function that deals with the sceario where the ball misses the paddle and falls off the window.
+//If the condition is met the new ball will appear at its starting position - cener of the window.
 void handleBallOffBottom() {
   if (ballOffBottom()) {
     ballX = width/2;
@@ -114,10 +135,13 @@ void handleBallOffBottom() {
   }
 }
 
+//Returns a true or false value for ballOffBottom checking if the bottom of the ball reached the bottom of the window.
 boolean ballOffBottom() {
   return (ballY - ballSize/2 > height);
 }
 
+//Function that deals with the scenario where the ball hits the wall. If the ball side reaches the "wall" (left or right side of the window),
+//it changes its direction on X-axis. If it reaches the top of the window, it changes its direction on Y-axis.
 void handleBallHitWall() {
   if (ballX - ballSize/2 < 0) {
     ballX = 0 + ballSize/2;
@@ -133,6 +157,8 @@ void handleBallHitWall() {
   }
 }
 
+//Events. If the arrow key is pressed the paddle will change its position with the velocity of 10 (paddleSpeed). It will "move" to the left
+//if the left arrow key is pressed and to the right, if the right arrow key is pressed.
 void keyPressed() {
   if (keyCode == LEFT) {
     paddleVX = -paddleSpeed;
@@ -141,6 +167,7 @@ void keyPressed() {
   }
 }
 
+//Stops the paddle from moving when the key is released.
 void keyReleased() {
   if (keyCode == LEFT && paddleVX < 0) {
     paddleVX = 0;
