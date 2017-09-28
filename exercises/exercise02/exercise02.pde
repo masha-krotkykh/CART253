@@ -20,10 +20,7 @@ int ballVX;
 int ballVY;
 int ballSpeed = 5;
 int ballSize = 16;
-int r = 255;
-int g = 255;
-int b = 255;
-color ballColor = color(r,g,b);
+color ballColor = color(255);
 
 void setup() {
   size(640, 480);
@@ -104,10 +101,18 @@ void drawPaddle() {
 
 //Draws white "ball" in the center of the window of the size defined earlier (16x16).
 void drawBall() {
-  rectMode(CENTER);
+//*CHANGED* The ball is round now
+  ellipseMode(CENTER);
   noStroke();
   fill(ballColor);
-  rect(ballX, ballY, ballSize, ballSize);
+  ellipse(ballX, ballY, ballSize, ballSize);
+//*CHANGED* If the ball gets darker than its default colour (after hitting the paddle) it gets lighter gradually until it reaches the value 255
+       if(ballColor < 255) {
+         ballColor = ballColor + 1;
+       }
+       else {
+         ballColor=(255);  
+       }
 }
 
 //Function that deals with the scenario where the ball hits the paddle. If condition of ballOverlapsePaddle is true,
@@ -116,7 +121,9 @@ void handleBallHitPaddle() {
   if (ballOverlapsPaddle()) {
     ballY = paddleY - paddleHeight/2 - ballSize/2;
 //*CHANGED* Each time the ball hits the paddle it moves 1 increment faster.    
-    ballVY = -ballVY - 1;
+    ballVY = -ballVY -1;
+//*CHANGED* When the ball hits the paddle it gets darker.    
+    ballColor = (70);
   }
 }
 
