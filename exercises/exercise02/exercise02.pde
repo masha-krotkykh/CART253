@@ -22,6 +22,7 @@ int ballSpeed = 5;
 int ballSize = 16;
 color ballColor = color(255);
 
+int score = 10;
 
 void setup() {
   size(640, 480);
@@ -49,6 +50,11 @@ void setupBall() {
 //Redraws new instance of the ball, paddle and static by calling their functions
 void draw() {
   background(backgroundColor);
+//*CHANGED* Added a counter that displays current score on the screen  
+  fill(255,255,255,50);
+  textSize(500);
+  textAlign(CENTER);
+  text(score,width / 2,height - paddleHeight * 3);
 
   drawStatic();
 
@@ -90,6 +96,8 @@ void updateBall() {
   handleBallHitPaddle();
   handleBallHitWall();
   handleBallOffBottom();
+//*CHANGED* Added new function
+  handleEndGame();
 }
 
 //Draws paddle at the position defined earlier (bottom center of the window).
@@ -163,12 +171,21 @@ void handleBallOffBottom() {
   if (ballOffBottom()) {
     ballX = width/2;
     ballY = height/2;
+    score = score - 1;
   }
 }
 
 //Returns a true or false value for ballOffBottom checking if the bottom of the ball reached the bottom of the window.
 boolean ballOffBottom() {
   return (ballY - ballSize/2 > height);
+}
+
+//*CHANGED* Added a new finction that resets the ball speed and the score when the score gets to 0
+void handleEndGame() {
+  if (score == 0) {
+    ballVY = ballSpeed;
+    score = 10;
+  }
 }
 
 //Function that deals with the scenario where the ball hits the wall. If the ball side reaches the "wall" (left or right side of the window),
@@ -205,4 +222,6 @@ void keyReleased() {
   } else if (keyCode == RIGHT && paddleVX > 0) {
     paddleVX = 0;
   }
+  println(score);
+  text(score,width/2, height/2);
 }
