@@ -22,6 +22,7 @@ int ballSpeed = 5;
 int ballSize = 16;
 color ballColor = color(255);
 
+
 void setup() {
   size(640, 480);
   
@@ -92,11 +93,30 @@ void updateBall() {
 }
 
 //Draws paddle at the position defined earlier (bottom center of the window).
+//void drawPaddle() {
+//  rectMode(CENTER);
+//  noStroke();
+//  fill(paddleColor);
+//  rect(paddleX, paddleY, paddleWidth, paddleHeight);
+//}
+
+//*CHANGED* Loop draws paddle that now consists of smaller rectangles of random width between 25 and 100; 
+//and is skinnier (1/2 of the original paddleWidth). Colour of the squares also changes randomly.
 void drawPaddle() {
-  rectMode(CENTER);
-  noStroke();
-  fill(paddleColor);
-  rect(paddleX, paddleY, paddleWidth, paddleHeight);
+  int squareX = paddleX - paddleWidth/2;
+  int squareY = paddleY - paddleHeight/2;
+  int squareWidth = floor(random(25,100));
+  int squareHeight = paddleHeight/2;
+  int r = floor(random(0,255));
+  int g = floor(random(0,255));
+  int b = floor(random(0,255));
+  color squareColor = color(r,g,b);
+    while(squareX + squareWidth < (paddleX + paddleWidth / 2)) {
+        stroke(10);
+        fill(squareColor);
+        rect(squareX,squareY,squareWidth,squareHeight);
+        squareX = squareX + squareWidth;
+    }
 }
 
 //Draws white "ball" in the center of the window of the size defined earlier (16x16).
