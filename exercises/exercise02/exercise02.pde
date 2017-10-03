@@ -21,12 +21,12 @@ int ballVY;
 int ballSpeed = 5;
 int ballSize = 16;
 color ballColor = color(255);
-
+//*CHANGED* Added a variable for tracking score
 int score = 10;
 
 void setup() {
   size(640, 480);
-  
+
   setupPaddle();
   setupBall();
 }
@@ -50,11 +50,11 @@ void setupBall() {
 //Redraws new instance of the ball, paddle and static by calling their functions
 void draw() {
   background(backgroundColor);
-//*CHANGED* Added a counter that displays current score on the screen  
-  fill(255,255,255,50);
+  //*CHANGED* Added a counter that displays current score on the screen  
+  fill(255, 255, 255, 50);
   textSize(500);
   textAlign(CENTER);
-  text(score,width / 2,height - paddleHeight * 3);
+  text(score, width / 2, height - paddleHeight * 3);
 
   drawStatic();
 
@@ -71,11 +71,11 @@ void draw() {
 //one additional instance every time a loop completes.
 void drawStatic() {
   for (int i = 0; i < numStatic; i++) {
-   float x = random(0,width);
-   float y = random(0,height);
-   float staticSize = random(staticSizeMin,staticSizeMax);
-   fill(staticColor);
-   rect(x,y,staticSize,staticSize);
+    float x = random(0, width);
+    float y = random(0, height);
+    float staticSize = random(staticSizeMin, staticSizeMax);
+    fill(staticColor);
+    rect(x, y, staticSize, staticSize);
   }
 }
 
@@ -83,7 +83,7 @@ void drawStatic() {
 //(paddleVX) which is 0 by default. The movement is constrained within the width of the window.
 void updatePaddle() {
   paddleX += paddleVX;  
-  paddleX = constrain(paddleX,0+paddleWidth/2,width-paddleWidth/2);
+  paddleX = constrain(paddleX, 0+paddleWidth/2, width-paddleWidth/2);
 }
 
 //Calls the new instance of the ball at the new position which is its starting poition + velocity
@@ -92,11 +92,11 @@ void updatePaddle() {
 void updateBall() {
   ballX += ballVX;
   ballY += ballVY;
-  
+
   handleBallHitPaddle();
   handleBallHitWall();
   handleBallOffBottom();
-//*CHANGED* Added new function
+  //*CHANGED* Added new function
   handleEndGame();
 }
 
@@ -110,37 +110,47 @@ void updateBall() {
 
 //*CHANGED* Loop draws paddle that now consists of smaller rectangles of random width between 25 and 100; 
 //and is skinnier (1/2 of the original paddleWidth). Colour of the squares also changes randomly.
+
+//*CHANGED AGAIN WITH PIPPIN'S HELP* Now the paddle is prettier and is built from the center outwards
 void drawPaddle() {
-  int squareX = paddleX - paddleWidth/2;
-  int squareY = paddleY - paddleHeight/2;
-  int squareWidth = floor(random(25,100));
-  int squareHeight = paddleHeight/2;
-  int r = floor(random(0,255));
-  int g = floor(random(0,255));
-  int b = floor(random(0,255));
-  color squareColor = color(r,g,b);
-    while(squareX + squareWidth < (paddleX + paddleWidth / 2)) {
-        stroke(10);
-        fill(squareColor);
-        rect(squareX,squareY,squareWidth,squareHeight);
-        squareX = squareX + squareWidth;
-    }
+
+  int squareWidth = floor(random(5, 60));
+  int squareHeight = paddleHeight;
+
+  int rightSquareX = paddleX;
+  int leftSquareX = paddleX - squareWidth;
+  int squareY = paddleY + paddleHeight/2;
+
+
+  int r = floor(random(255));
+  int g = floor(random(10));
+  int b = floor(random(200));
+  color squareColor = color(r, g, b);
+
+  while (rightSquareX+squareWidth < paddleX + paddleWidth/2) {
+
+    noStroke();
+    fill(squareColor);
+    rect(rightSquareX, squareY, squareWidth, squareHeight);
+    rect(leftSquareX, squareY, squareWidth, squareHeight);
+    rightSquareX = rightSquareX + squareWidth;
+    leftSquareX = leftSquareX - squareWidth;
+  }
 }
 
 //Draws white "ball" in the center of the window of the size defined earlier (16x16).
 void drawBall() {
-//*CHANGED* The ball is round now
+  //*CHANGED* The ball is round now
   ellipseMode(CENTER);
   noStroke();
   fill(ballColor);
   ellipse(ballX, ballY, ballSize, ballSize);
-//*CHANGED* If the ball gets darker than its default colour (after hitting the paddle) it gets lighter gradually until it reaches the value 255
-       if(ballColor < 255) {
-         ballColor = ballColor + 1;
-       }
-       else {
-         ballColor=(255);  
-       }
+  //*CHANGED* If the ball gets darker than its default colour (after hitting the paddle) it gets lighter gradually until it reaches the value 255
+  if (ballColor < 255) {
+    ballColor = ballColor + 2;
+  } else {
+    ballColor=(255);
+  }
 }
 
 //Function that deals with the scenario where the ball hits the paddle. If condition of ballOverlapsePaddle is true,
@@ -148,9 +158,9 @@ void drawBall() {
 void handleBallHitPaddle() {
   if (ballOverlapsPaddle()) {
     ballY = paddleY - paddleHeight/2 - ballSize/2;
-//*CHANGED* Each time the ball hits the paddle it moves 1 increment faster.    
+    //*CHANGED* Each time the ball hits the paddle it moves 1 increment faster.    
     ballVY = -ballVY -1;
-//*CHANGED* When the ball hits the paddle it gets darker.    
+    //*CHANGED* When the ball hits the paddle it gets darker.    
     ballColor = (70);
   }
 }
@@ -171,6 +181,7 @@ void handleBallOffBottom() {
   if (ballOffBottom()) {
     ballX = width/2;
     ballY = height/2;
+    //*CHANGED* The score gets updated each time the ball misses the padle
     score = score - 1;
   }
 }
@@ -180,7 +191,7 @@ boolean ballOffBottom() {
   return (ballY - ballSize/2 > height);
 }
 
-//*CHANGED* Added a new finction that resets the ball speed and the score when the score gets to 0
+//*CHANGED* Added a new function that resets the ball speed and the score when the score gets to 0
 void handleEndGame() {
   if (score == 0) {
     ballVY = ballSpeed;
@@ -198,7 +209,7 @@ void handleBallHitWall() {
     ballX = width - ballSize/2;
     ballVX = -ballVX;
   }
-  
+
   if (ballY - ballSize/2 < 0) {
     ballY = 0 + ballSize/2;
     ballVY = -ballVY;
@@ -222,6 +233,4 @@ void keyReleased() {
   } else if (keyCode == RIGHT && paddleVX > 0) {
     paddleVX = 0;
   }
-  println(score);
-  text(score,width/2, height/2);
 }
