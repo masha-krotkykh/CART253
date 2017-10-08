@@ -87,4 +87,15 @@ class Bouncer {
    fill(fillColor);
    ellipse(x,y,size,size);
  }
+
+ //*CHANGED* Added a new method to check if the mouse butto is pressed. If it is pressed, velocity on X-axis changes to the opposite
+ void mouseClicked() {
+   handleClick();
+ }
+ 
+ void handleClick() {
+   if (dist(mouseX,mouseY,x,y) < size/2 && mousePressed) {
+   vx = -vx;
+   }
+ }
 }

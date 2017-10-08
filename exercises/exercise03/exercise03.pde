@@ -20,4 +20,7 @@ void draw() {
   bouncer2.update();
   bouncer.draw();
   bouncer2.draw();
+//*CHANGED* Calling a new method to check if the bouncer was clicked by the mouse
+  bouncer.mouseClicked();
+  bouncer2.mouseClicked();
 }
