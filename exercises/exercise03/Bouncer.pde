@@ -1,5 +1,8 @@
+//Bouncer object to be called by the main file.
+
+//Bouncer class name.
 class Bouncer {
-  
+// Data. Instance variables for object properties  
  int x;
  int y;
  int vx;
@@ -8,7 +11,9 @@ class Bouncer {
  color fillColor;
  color defaultColor;
  color hoverColor;
- 
+
+ //Constructor with arguments. 
+ //Arguments will be used in the main file to define the initial behaviour of each instance of the bouncer object
  Bouncer(int tempX, int tempY, int tempVX, int tempVY, int tempSize, color tempDefaultColor, color tempHoverColor) {
    x = tempX;
    y = tempY;
@@ -20,14 +25,21 @@ class Bouncer {
    fillColor = defaultColor;
  }
  
+ //Functionality of the bouncer. 
+ //It should move (be updated) by velocity. i.e. its updated position is its previous position + velocity (both X- and Y-axis)
  void update() {
    x += vx;
    y += vy;
-   
+ 
+   //Calling functions
    handleBounce();
    handleMouse();
  }
  
+ //handleBounce function describes bouncer behaviour when colliding with walls.
+ //The bouncer X-velocity changes to the oposite (it goes the oposite way on X-axis)
+ //when its edge hits right or left margin of the window. Same happens on the Y-axis when the bouncer hits 
+ //top or bottom of the window. X and Y position of the bouncer are constrained within the window for cleaner look
  void handleBounce() {
    if (x - size/2 < 0 || x + size/2 > width) {
     vx = -vx; 
@@ -40,7 +52,10 @@ class Bouncer {
    x = constrain(x,size/2,width-size/2);
    y = constrain(y,size/2,height-size/2);
  }
+
  
+ //handleMouse function. When the mouse pointer overlapse the bouncer, the bouncer colour
+ //changes to the hover colour. 
  void handleMouse() {
    if (dist(mouseX,mouseY,x,y) < size/2) {
     fillColor = hoverColor; 
@@ -50,6 +65,7 @@ class Bouncer {
    }
  }
  
+ // draw function defines the appearanceof every instance of the bouncer 
  void draw() {
    noStroke();
    fill(fillColor);
