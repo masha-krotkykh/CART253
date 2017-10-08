@@ -11,6 +11,7 @@ class Bouncer {
  color fillColor;
  color defaultColor;
  color hoverColor;
+ int growth;
 
  //Constructor with arguments. 
  //Arguments will be used in the main file to define the initial behaviour of each instance of the bouncer object
@@ -41,12 +42,27 @@ class Bouncer {
  //when its edge hits right or left margin of the window. Same happens on the Y-axis when the bouncer hits 
  //top or bottom of the window. X and Y position of the bouncer are constrained within the window for cleaner look
  void handleBounce() {
+ //*CHANGED* Added a variable to use for size increase / decrease
+   growth = 4;
+   
    if (x - size/2 < 0 || x + size/2 > width) {
     vx = -vx; 
+//*CHANGED* When the bouncer hits left or right size of the window it changes its size in increments of 4
+//when the size reaches 4, it starts growing until it reaches 10.
+      if (size <= 4 || size >= 10) {
+         size = size - growth;
+       }  
+       else {
+         size = size + growth;
+       }
    }
    
    if (y - size/2 < 0 || y + size/2 > height) {
      vy = -vy;
+//*CHANGED* When the bouncer hits top or bottom of the window, its new instance appears 
+//in random placewithin the window     
+     x = floor (random(width));
+     y = floor (random(height));
    }
    
    x = constrain(x,size/2,width-size/2);
