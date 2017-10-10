@@ -1,4 +1,5 @@
-//Bouncer object to be called by the main file.
+//Bouncer object (round shapes) to be called by the main file.
+// it changes its size. It also changes direction on click
 
 //Bouncer class name.
 class Bouncer {

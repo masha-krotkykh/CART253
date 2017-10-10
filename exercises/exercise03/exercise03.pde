@@ -1,4 +1,4 @@
-//Main file that calls for bouncer object (twice)
+//Main file that calls for bouncer object (twice) and a randomMover object
 color backgroundColor = color(200,150,150);
 //Declaring bouncer objects
 Bouncer bouncer;
