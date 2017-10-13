@@ -22,7 +22,12 @@ class Ball {
   // The colour of the ball
   color ballColor = color(255);
 
-
+  // *ADDED* New variables for tracking score
+  //int leftScore = 0;
+  //int rightScore = 0;
+  //int leftLives = 5;
+  //int rightLives = 5;
+  
   /////////////// Constructor ///////////////
 
   // Ball(int _x, int _y)
@@ -40,7 +45,6 @@ class Ball {
     vx = SPEED;
     vy = SPEED;
   }
-
 
   /////////////// Methods ///////////////
 
@@ -71,6 +75,7 @@ class Ball {
     x = width/2;
     y = height/2;
   }
+
   
   // isOffScreen()
   //
@@ -79,10 +84,12 @@ class Ball {
   // (If we wanted to return WHICH side it had gone off, we'd have to return
   // something like an int (e.g. 0 = not off, 1 = off left, 2 = off right)
   // or a String (e.g. "ON SCREEN", "OFF LEFT", "OFF RIGHT")
+
   
-  boolean isOffScreen() {
+    boolean isOffScreen() {
     return (x + SIZE/2 < 0 || x - SIZE/2 > width);
   }
+
 
   // collide(Paddle paddle)
   //
@@ -109,6 +116,32 @@ class Ball {
       }
       // And make it bounce
       vx = -vx;
+    }
+  }
+  // *ADDED* collide(AntiPaddle antiPaddle)
+  //
+  // Checks whether this ball is colliding with the anti-paddle passed as an argument
+  // If it is, it makes the ball bounce away from the anti-paddle by reversing its
+  // y velocity 
+    void collide(AntiPaddle antiPaddle) {
+    // Calculate possible overlaps with the anti-paddle side by side
+    boolean insideLeft = (x + SIZE/2 > antiPaddle.x - antiPaddle.WIDTH/2);
+    boolean insideRight = (x - SIZE/2 < antiPaddle.x + antiPaddle.WIDTH/2);
+    boolean insideTop = (y + SIZE/2 > antiPaddle.y - antiPaddle.HEIGHT/2);
+    boolean insideBottom = (y - SIZE/2 < antiPaddle.y + antiPaddle.HEIGHT/2);
+    
+    // Check if the ball overlaps with the anti-paddle
+    if (insideLeft && insideRight && insideTop && insideBottom) {
+      // If it was moving to the top
+      if (vy < 0) {
+        // Reset its position to align with the right side of the anti-paddle
+        y = antiPaddle.y + antiPaddle.HEIGHT/2 + SIZE/2;
+      } else if (vy > 0) {
+        // Reset its position to align with the left side of the anti-paddle
+        y = antiPaddle.y - antiPaddle.HEIGHT/2 - SIZE/2;
+      }
+      // And make it bounce
+      vy = -vy;
     }
   }
 

@@ -39,6 +39,7 @@ void setup() {
   // different accented characters in text editors (so avoid those if you're changing this)
   leftPaddle = new Paddle(PADDLE_INSET, height/2, '1', 'q');
   rightPaddle = new Paddle(width - PADDLE_INSET, height/2, '0', 'p');
+  
   // *ADDED* top and bottom "anti-paddles" that are controlled with same keys as corresponding paddles (right-bottom, left-top)
   topAntiPaddle = new AntiPaddle(width/2, PADDLE_INSET, '1', 'q');
   bottomAntiPaddle = new AntiPaddle(width/2, height-PADDLE_INSET, '0', 'p');
@@ -53,6 +54,8 @@ void setup() {
 // if the ball has hit a paddle, and displaying everything.
 
 void draw() {
+
+  
   // Fill the background each frame so we have animation
   background(backgroundColor);
 
@@ -67,6 +70,10 @@ void draw() {
   // Check if the ball has collided with either paddle
   ball.collide(leftPaddle);
   ball.collide(rightPaddle);
+  
+  // *ADDED* detect collision with anti-paddles
+  ball.collide(topAntiPaddle);
+  ball.collide(bottomAntiPaddle);
 
 
   // Check if the ball has gone off the screen
