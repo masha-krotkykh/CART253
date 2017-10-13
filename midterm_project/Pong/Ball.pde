@@ -8,7 +8,7 @@ class Ball {
   /////////////// Properties ///////////////
 
   // Default values for speed and size
-  int SPEED = 5;
+  int SPEED = 4;
   int SIZE = 16;
 
   // The location of the ball
@@ -19,15 +19,16 @@ class Ball {
   int vx;
   int vy;
 
-  // The colour of the ball
-  color ballColor = color(255);
+  // *REMOVED* The colour of the ball not needed
+  //color ballColor = color(255);
   
+  // *ADDED* an image to display instead of the ball
   PImage image;
    
-
-  // *ADDED* New variables for tracking score
-  //int leftScore = 0;
-  //int rightScore = 0;
+  // *ADDED* New variables for tracking score and detecting if the ball is off screen
+  int ballPosition;
+  int leftScore = 0;
+  int rightScore = 0;
   //int leftLives = 5;
   //int rightLives = 5;
   
@@ -89,8 +90,23 @@ class Ball {
   // or a String (e.g. "ON SCREEN", "OFF LEFT", "OFF RIGHT")
 
   
-    boolean isOffScreen() {
-    return (x + SIZE/2 < 0 || x - SIZE/2 > width);
+  // *ADDED* check if the ball is on screen if not, on which side it left the screen.
+  // Update score accordingly. If the ball is off the left side, the function returns value
+  // of 1 and adds 1 to the right player, if the ball is off the right side, value returned is
+  // 2 and the left players score gets +1. If neither is the case, it returns the default value of 0.
+  int offScreen() {
+      if(x + SIZE/2 < 0) {
+        ballPosition = 1;
+        rightScore = rightScore + 1;
+      }
+      else if(x - SIZE/2 > width) {
+        ballPosition = 2;
+        leftScore = leftScore + 1;
+      }
+      else {
+        ballPosition = 0;
+      }
+     return ballPosition;
   }
 
 
@@ -147,6 +163,7 @@ class Ball {
       }
       // And make it bounce
       vy = -vy;
+      vx = -vx;
     }
   }
 

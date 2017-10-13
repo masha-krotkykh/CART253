@@ -17,11 +17,13 @@ Ball ball;
 AntiPaddle topAntiPaddle;
 AntiPaddle bottomAntiPaddle;
 
+Obstacle obstacle;
+
 // The distance from the edge of the window a paddle should be
-int PADDLE_INSET = 20;
+int PADDLE_INSET = 30;
 
 // The background colour during play (black)
-color backgroundColor = color(0);
+color backgroundColor = color(255);
 
 
 // setup()
@@ -44,6 +46,9 @@ void setup() {
   topAntiPaddle = new AntiPaddle(width/2, PADDLE_INSET, "cake_blue_top.png", '1', 'q');
   bottomAntiPaddle = new AntiPaddle(width/2, height-PADDLE_INSET, "cake_red_bottom.png", '0', 'p');
 
+  // *ADDED* an obstacle moving up and down the middle of the screen
+  obstacle = new Obstacle(width/2, floor(random(height)));
+
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);
 }
@@ -54,8 +59,7 @@ void setup() {
 // if the ball has hit a paddle, and displaying everything.
 
 void draw() {
-
-  
+  println(ball.ballPosition);
   // Fill the background each frame so we have animation
   background(backgroundColor);
 
@@ -63,9 +67,13 @@ void draw() {
   leftPaddle.update();
   rightPaddle.update();
   ball.update();
-  //*ADDED* update for anti-paddles
+  
+  // *ADDED* update for anti-paddles
   topAntiPaddle.update();
   bottomAntiPaddle.update();
+  
+  // *ADDED* update for obstacle
+  obstacle.update();
 
   // Check if the ball has collided with either paddle
   ball.collide(leftPaddle);
@@ -74,10 +82,10 @@ void draw() {
   // *ADDED* detect collision with anti-paddles
   ball.collide(topAntiPaddle);
   ball.collide(bottomAntiPaddle);
-
+  ball.offScreen();
 
   // Check if the ball has gone off the screen
-  if (ball.isOffScreen()) {
+  if (ball.ballPosition == 2 || ball.ballPosition == 1) {
     // If it has, reset the ball
     ball.reset();
   }
@@ -86,9 +94,13 @@ void draw() {
   leftPaddle.display();
   rightPaddle.display();
   ball.display();
+  
   //*ADDED* display for anti-paddles
   topAntiPaddle.display();
   bottomAntiPaddle.display();
+  
+  // *ADDED* display for obstacle
+  obstacle.display();
 }
 
 // keyPressed()
