@@ -21,6 +21,9 @@ class Ball {
 
   // The colour of the ball
   color ballColor = color(255);
+  
+  PImage image;
+   
 
   // *ADDED* New variables for tracking score
   //int leftScore = 0;
@@ -43,7 +46,7 @@ class Ball {
     x = _x;
     y = _y;
     vx = SPEED;
-    vy = SPEED;
+    vy = SPEED;  
   }
 
   /////////////// Methods ///////////////
@@ -96,6 +99,8 @@ class Ball {
   // Checks whether this ball is colliding with the paddle passed as an argument
   // If it is, it makes the ball bounce away from the paddle by reversing its
   // x velocity
+
+  
 
   void collide(Paddle paddle) {
     // Calculate possible overlaps with the paddle side by side
@@ -151,11 +156,24 @@ class Ball {
 
   void display() {
     // Set up the appearance of the ball (no stroke, a fill, and rectMode as CENTER)
-    noStroke();
-    fill(ballColor);
-    rectMode(CENTER);
+  // *REMOVED* ball is not a rect anymore  
+    //noStroke();
+    //fill(ballColor);
+    //rectMode(CENTER);
 
     // Draw the ball
-    rect(x, y, SIZE, SIZE);
+    //rect(x, y, SIZE, SIZE);
+    
+  // *ADDED* The ball is displayed as an image of a fly.
+  // check which direction the "ball" is moving, flipping the fly accordingly by
+  // substituting the image
+        if(vx > 0) {
+      image = loadImage("fly_right.png");
+    }
+    else if (vx < 0) {
+      image = loadImage("fly_left.png");
+    }  
+    imageMode(CENTER);
+    image(image,x,y);
   }
 }

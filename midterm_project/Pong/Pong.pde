@@ -18,7 +18,7 @@ AntiPaddle topAntiPaddle;
 AntiPaddle bottomAntiPaddle;
 
 // The distance from the edge of the window a paddle should be
-int PADDLE_INSET = 8;
+int PADDLE_INSET = 20;
 
 // The background colour during play (black)
 color backgroundColor = color(0);
@@ -37,12 +37,12 @@ void setup() {
   // Also pass through the two keys used to control 'up' and 'down' respectively
   // NOTE: On a mac you can run into trouble if you use keys that create that popup of
   // different accented characters in text editors (so avoid those if you're changing this)
-  leftPaddle = new Paddle(PADDLE_INSET, height/2, '1', 'q');
-  rightPaddle = new Paddle(width - PADDLE_INSET, height/2, '0', 'p');
+  leftPaddle = new Paddle(PADDLE_INSET, height/2, "chameleon_blue_left.png", '1', 'q');
+  rightPaddle = new Paddle(width - PADDLE_INSET, height/2, "chameleon_red_right.png", '0', 'p');
   
   // *ADDED* top and bottom "anti-paddles" that are controlled with same keys as corresponding paddles (right-bottom, left-top)
-  topAntiPaddle = new AntiPaddle(width/2, PADDLE_INSET, '1', 'q');
-  bottomAntiPaddle = new AntiPaddle(width/2, height-PADDLE_INSET, '0', 'p');
+  topAntiPaddle = new AntiPaddle(width/2, PADDLE_INSET, "cake_blue_top.png", '1', 'q');
+  bottomAntiPaddle = new AntiPaddle(width/2, height-PADDLE_INSET, "cake_red_bottom.png", '0', 'p');
 
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);

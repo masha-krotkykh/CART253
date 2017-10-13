@@ -9,8 +9,8 @@ class Paddle {
 
   // Default values for speed and size
   int SPEED = 5;
-  int HEIGHT = 70;
-  int WIDTH = 16;
+  int HEIGHT = 100;
+  int WIDTH = 40;
 
   // The position and velocity of the paddle (note that vx isn't really used right now)
   int x;
@@ -18,12 +18,16 @@ class Paddle {
   int vx;
   int vy;
   
+  // *REMOVED* no need for paddle color - will contain image
   // The fill color of the paddle
-  color paddleColor = color(255);
+  //color paddleColor = color(255);
 
   // The characters used to make the paddle move up and down, defined in constructor
   char upKey;
   char downKey;
+  
+  // *ADDED* PImage to display image instead the paddle
+  PImage image;
 
 
   /////////////// Constructor ///////////////
@@ -33,11 +37,13 @@ class Paddle {
   // Sets the position and controls based on arguments,
   // starts the velocity at 0
 
-  Paddle(int _x, int _y, char _upKey, char _downKey) {
+  Paddle(int _x, int _y, String _image, char _upKey, char _downKey) {
     x = _x;
     y = _y;
     vx = 0;
     vy = 0;
+
+    image = loadImage(_image);
 
     upKey = _upKey;
     downKey = _downKey;
@@ -65,12 +71,12 @@ class Paddle {
   
   void display() {
     // Set display properties
-    noStroke();
-    fill(paddleColor);
-    rectMode(CENTER);
+    imageMode(CENTER);
+    image(image,x,y);
     
+    // *REMOVED* no need for rectangle anymore
     // Draw the paddle as a rectangle
-    rect(x, y, WIDTH, HEIGHT);
+    //rect(x, y, WIDTH, HEIGHT);
   }
 
   // keyPressed()

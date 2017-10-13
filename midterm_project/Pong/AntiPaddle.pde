@@ -9,8 +9,8 @@ class AntiPaddle {
 
   // Default values for speed and size
   int SPEED = 5;
-  int HEIGHT = 16;
-  int WIDTH = 70;
+  int HEIGHT = 30;
+  int WIDTH = 100;
 
   // The position and velocity of the anti-paddle (note that vy isn't really used right now)
   int x;
@@ -24,7 +24,9 @@ class AntiPaddle {
   // The characters used to make the paddle move left and right, defined in constructor
   char leftKey;
   char rightKey;
-
+  
+  // *ADDED* PImage to display image instead the anti-paddle
+  PImage image;
 
   /////////////// Constructor ///////////////
 
@@ -33,7 +35,7 @@ class AntiPaddle {
   // Sets the position and controls based on arguments,
   // starts the velocity at 0
 
-  AntiPaddle(int _x, int _y, char _leftKey, char _rightKey) {
+  AntiPaddle(int _x, int _y, String _image, char _leftKey, char _rightKey) {
     x = _x;
     y = _y;
     vx = 0;
@@ -41,6 +43,9 @@ class AntiPaddle {
 
     leftKey = _leftKey;
     rightKey = _rightKey;
+    
+    // *ADDED* PImage to display image instead the anti-paddle
+    image = loadImage(_image);
   }
 
 
@@ -65,12 +70,9 @@ class AntiPaddle {
   
   void display() {
     // Set display properties
-    noStroke();
-    fill(paddleColor);
-    rectMode(CENTER);
-    
-    // Draw the paddle as a rectangle
-    rect(x, y, WIDTH, HEIGHT);
+    imageMode(CENTER);
+    image(image,x,y);
+
   }
 
   // keyPressed()
