@@ -78,6 +78,9 @@ class Ball {
   void reset() {
     x = width/2;
     y = height/2;
+   // *ADDED* when the ball is reset it restores its default velocity 
+    vx = SPEED;
+    vy = SPEED;
   }
 
   
@@ -164,6 +167,22 @@ class Ball {
       // And make it bounce
       vy = -vy;
       vx = -vx;
+    }
+  }
+  
+    // *ADDED* Check if the ball overlaps with the obstacle  
+    void collide(Obstacle obstacle) {
+    // *CHANGED* Calculate possible overlaps with the obstacle side by side
+    boolean insideLeft = (x + SIZE/2 > obstacle.x - obstacle.obstacleWidth/2);
+    boolean insideRight = (x - SIZE/2 < obstacle.x + obstacle.obstacleWidth/2);
+    boolean insideTop = (y + SIZE/2 > obstacle.y - obstacle.obstacleHeight/2);
+    boolean insideBottom = (y - SIZE/2 < obstacle.y + obstacle.obstacleHeight/2);
+    
+    // *ADDED* Check if the ball overlaps with the obstacle
+    // and make it change speed randomly and direction.
+    if (insideLeft && insideRight && insideTop && insideBottom) {
+      vx = -vx - floor(random(-10,10));
+      vy = -vy;
     }
   }
 

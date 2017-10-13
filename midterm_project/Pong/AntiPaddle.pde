@@ -9,7 +9,7 @@ class AntiPaddle {
 
   // Default values for speed and size
   int SPEED = 5;
-  int HEIGHT = 30;
+  int HEIGHT = 15;
   int WIDTH = 100;
 
   // The position and velocity of the anti-paddle (note that vy isn't really used right now)
@@ -61,7 +61,7 @@ class AntiPaddle {
     y += vy;
 
     // Constrain the paddle's y position to be in the window
-    x = constrain(x,0 + WIDTH/2,width - WIDTH/2);
+    x = constrain(x, 0 + WIDTH/2, width - WIDTH/2);
   }
 
   // display()

@@ -21,6 +21,8 @@ Obstacle obstacle;
 
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 30;
+// *ADDED* The distance from the edge of the window an anti-paddle should be
+int ANTI_INSET = 20;
 
 // The background colour during play (black)
 color backgroundColor = color(255);
@@ -43,8 +45,8 @@ void setup() {
   rightPaddle = new Paddle(width - PADDLE_INSET, height/2, "chameleon_red_right.png", '0', 'p');
   
   // *ADDED* top and bottom "anti-paddles" that are controlled with same keys as corresponding paddles (right-bottom, left-top)
-  topAntiPaddle = new AntiPaddle(width/2, PADDLE_INSET, "cake_blue_top.png", '1', 'q');
-  bottomAntiPaddle = new AntiPaddle(width/2, height-PADDLE_INSET, "cake_red_bottom.png", '0', 'p');
+  topAntiPaddle = new AntiPaddle(width/2, ANTI_INSET, "cake_blue_top.png", '1', 'q');
+  bottomAntiPaddle = new AntiPaddle(width/2, height - ANTI_INSET, "cake_red_bottom.png", '0', 'p');
 
   // *ADDED* an obstacle moving up and down the middle of the screen
   obstacle = new Obstacle(width/2, floor(random(height)));
@@ -82,9 +84,14 @@ void draw() {
   // *ADDED* detect collision with anti-paddles
   ball.collide(topAntiPaddle);
   ball.collide(bottomAntiPaddle);
+  
+  // *ADDED* call offScreen() function to return the ballPosition value to be able to reset the ball
   ball.offScreen();
+  
+  // *ADDED* check for collisions withth obstacle 
+  ball.collide(obstacle);
 
-  // Check if the ball has gone off the screen
+  // Check if the ball has gone off the screen on either side
   if (ball.ballPosition == 2 || ball.ballPosition == 1) {
     // If it has, reset the ball
     ball.reset();

@@ -4,7 +4,8 @@ class Obstacle {
 
   int x;
   int y;
-  int size = 10;
+  int obstacleHeight = 100;
+  int obstacleWidth = 10;
   int vy;
   int speed = 3;
   PImage image;
@@ -19,7 +20,7 @@ class Obstacle {
   void update() {
     x = width/2;
     y += vy;
-    if (y + size/2 > height || y - size/2 < 0) {
+    if (y + obstacleHeight/2 > height || y - obstacleHeight/2 < 0) {
       vy = -vy;
     }
   }
