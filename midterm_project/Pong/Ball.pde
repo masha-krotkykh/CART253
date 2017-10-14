@@ -29,8 +29,8 @@ class Ball {
   int ballPosition;
   int leftScore = 0;
   int rightScore = 0;
-  //int leftLives = 5;
-  //int rightLives = 5;
+  int leftLives = 7;
+  int rightLives = 7;
   
   /////////////// Constructor ///////////////
 
@@ -61,7 +61,8 @@ class Ball {
   void update() {
     // First update the location based on the velocity (so the ball moves)
     x += vx;
-    y += vy;
+    // *CHANGED* add a random number between -5 and 5 on the Y-axis to mimick a fly movement
+    y += vy + random(-5,5);
 
     // Check if the ball is going off the top of bottom
     if (y - SIZE/2 < 0 || y + SIZE/2 > height) {
@@ -160,9 +161,11 @@ class Ball {
       if (vy < 0) {
         // Reset its position to align with the right side of the anti-paddle
         y = antiPaddle.y + antiPaddle.HEIGHT/2 + SIZE/2;
+        leftLives = leftLives - 1;
       } else if (vy > 0) {
         // Reset its position to align with the left side of the anti-paddle
         y = antiPaddle.y - antiPaddle.HEIGHT/2 - SIZE/2;
+        rightLives = rightLives - 1;
       }
       // And make it bounce
       vy = -vy;

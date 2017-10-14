@@ -19,10 +19,13 @@ AntiPaddle bottomAntiPaddle;
 
 Obstacle obstacle;
 
+// *ADDED* an image for the background
+PImage backgroundImage;
+
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 30;
 // *ADDED* The distance from the edge of the window an anti-paddle should be
-int ANTI_INSET = 20;
+//int ANTI_INSET = 30;
 
 // The background colour during play (black)
 color backgroundColor = color(255);
@@ -45,26 +48,54 @@ void setup() {
   rightPaddle = new Paddle(width - PADDLE_INSET, height/2, "chameleon_red_right.png", '0', 'p');
   
   // *ADDED* top and bottom "anti-paddles" that are controlled with same keys as corresponding paddles (right-bottom, left-top)
-  topAntiPaddle = new AntiPaddle(width/2, ANTI_INSET, "cake_blue_top.png", '1', 'q');
-  bottomAntiPaddle = new AntiPaddle(width/2, height - ANTI_INSET, "cake_red_bottom.png", '0', 'p');
+  topAntiPaddle = new AntiPaddle(width/2, PADDLE_INSET, "cake_blue_top.png", '1', 'q');
+  bottomAntiPaddle = new AntiPaddle(width/2, height - PADDLE_INSET, "cake_red_bottom.png", '0', 'p');
 
   // *ADDED* an obstacle moving up and down the middle of the screen
-  obstacle = new Obstacle(width/2, floor(random(height)));
+  obstacle = new Obstacle(width/2, height/3);
 
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);
+  
+  // *ADDED* load background image
+  backgroundImage = loadImage("background.jpg");
 }
-
 // draw()
 //
 // Handles all the magic of making the paddles and ball move, checking
 // if the ball has hit a paddle, and displaying everything.
 
 void draw() {
-  println(ball.ballPosition);
+  println(ball.rightLives);
   // Fill the background each frame so we have animation
-  background(backgroundColor);
-
+  background(backgroundImage);
+  
+  // *ADDED* display score
+  fill(0,0,255,50);
+  textSize(50);
+  textAlign(CENTER);
+  text(ball.leftScore, leftPaddle.x + leftPaddle.WIDTH + PADDLE_INSET, leftPaddle.y);
+  fill(255,0,0,50);
+  text(ball.rightScore, rightPaddle.x - rightPaddle.WIDTH - PADDLE_INSET, rightPaddle.y);
+  
+  
+  int livesSize = 20;
+  int leftLivesX = topAntiPaddle.x + topAntiPaddle.WIDTH / 2 - livesSize;
+  rectMode(CENTER);
+  fill(0,0,255);
+  noStroke();
+  for (int i = ball.leftLives; i > 0; i--) {
+    rect(leftLivesX, 80, livesSize, livesSize / 2);
+    leftLivesX = leftLivesX - 10;
+  }
+  
+  int rightLivesX = bottomAntiPaddle.x - bottomAntiPaddle.WIDTH / 2 + livesSize;
+  fill(255,0,0);
+  for (int i = ball.rightLives; i > 0; i--) {
+    rect(rightLivesX, height - 80, livesSize, livesSize / 2);
+    rightLivesX = rightLivesX + 10;
+  }
+  
   // Update the paddles and ball by calling their update methods
   leftPaddle.update();
   rightPaddle.update();
@@ -95,6 +126,7 @@ void draw() {
   if (ball.ballPosition == 2 || ball.ballPosition == 1) {
     // If it has, reset the ball
     ball.reset();
+    
   }
 
   // Display the paddles and the ball

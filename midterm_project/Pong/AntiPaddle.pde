@@ -9,7 +9,7 @@ class AntiPaddle {
 
   // Default values for speed and size
   int SPEED = 5;
-  int HEIGHT = 15;
+  int HEIGHT = 10;
   int WIDTH = 100;
 
   // The position and velocity of the anti-paddle (note that vy isn't really used right now)
@@ -17,9 +17,6 @@ class AntiPaddle {
   int y;
   int vx;
   int vy;
-  
-  // The fill color of the paddle
-  color paddleColor = color(255);
 
   // The characters used to make the paddle move left and right, defined in constructor
   char leftKey;
@@ -66,7 +63,7 @@ class AntiPaddle {
 
   // display()
   //
-  // Display the paddle at its location
+  // Display the anti-paddle at its location
   
   void display() {
     // Set display properties
