@@ -25,11 +25,16 @@ PImage backgroundImage;
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 30;
 // *ADDED* The distance from the edge of the window an anti-paddle should be
-//int ANTI_INSET = 30;
+int ANTI_INSET = 25;
 
 // The background colour during play (black)
-color backgroundColor = color(255);
+//color backgroundColor = color(255);
 
+int gameScreen = 0;
+
+// *ADDED* variables to calculate the overall player's score at the end of the game
+int leftTotalScore;
+int rightTotalScore;
 
 // setup()
 //
@@ -48,17 +53,15 @@ void setup() {
   rightPaddle = new Paddle(width - PADDLE_INSET, height/2, "chameleon_red_right.png", '0', 'p');
   
   // *ADDED* top and bottom "anti-paddles" that are controlled with same keys as corresponding paddles (right-bottom, left-top)
-  topAntiPaddle = new AntiPaddle(width/2, PADDLE_INSET, "cake_blue_top.png", '1', 'q');
-  bottomAntiPaddle = new AntiPaddle(width/2, height - PADDLE_INSET, "cake_red_bottom.png", '0', 'p');
+  topAntiPaddle = new AntiPaddle(width/2, ANTI_INSET, "cake_blue_top.png", '1', 'q');
+  bottomAntiPaddle = new AntiPaddle(width/2, height - ANTI_INSET, "cake_red_bottom.png", '0', 'p');
 
   // *ADDED* an obstacle moving up and down the middle of the screen
   obstacle = new Obstacle(width/2, height/3);
 
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);
-  
-  // *ADDED* load background image
-  backgroundImage = loadImage("background.jpg");
+
 }
 // draw()
 //
@@ -66,7 +69,56 @@ void setup() {
 // if the ball has hit a paddle, and displaying everything.
 
 void draw() {
-  println(ball.rightLives);
+  println(ball.leftHealth);
+  // *ADDED* display the current screen according to the game stage
+  // startScreen displays before the game begins and until the mouse is clicked
+  if(gameScreen == 0) {
+    startScreen(); 
+  }
+  
+  // endScreen displays when the game ends until the mouse is clicked
+  else if(gameScreen == 2) {
+    endScreen();
+  }
+  
+  // gameScreen is the stage where the game executes
+  else {
+    gameScreen();
+  }
+}
+
+// *ADDED* functions to display an appropriate screen
+// startScreen before the game begins
+void startScreen() {
+  backgroundImage = loadImage("start_screen.jpg");
+  background(backgroundImage);
+}
+
+// endScreen when the game ends. Calculate and display final scores.
+// Scores are calculated as follows: game score + saved cakes * 2
+// Depending on who won end screen displays their portrait
+void endScreen() {
+  leftTotalScore = ball.leftScore + ball.leftHealth * 2;
+  rightTotalScore = ball.rightScore + ball.rightHealth * 2;
+  if(leftTotalScore > rightTotalScore) {
+    backgroundImage = loadImage("winner_left.jpg");
+    fill(0,0,255);
+  }
+  else if(leftTotalScore < rightTotalScore) {
+    backgroundImage = loadImage("winner_right.jpg");
+    fill(255,0,0);
+  }
+  background(backgroundImage);
+  textAlign(CENTER);
+  text(leftTotalScore + ":" + rightTotalScore, width/2, height/4);  
+}
+
+// *CHANGED* all the game code is now inside gameScreen() function so itr only gets called when the mouse is clicked from
+// the startScreen or the endScreen
+void gameScreen() {
+    
+  // *ADDED* load background image
+  backgroundImage = loadImage("background.jpg");
   // Fill the background each frame so we have animation
   background(backgroundImage);
   
@@ -79,21 +131,21 @@ void draw() {
   text(ball.rightScore, rightPaddle.x - rightPaddle.WIDTH - PADDLE_INSET, rightPaddle.y);
   
   
-  int livesSize = 20;
-  int leftLivesX = topAntiPaddle.x + topAntiPaddle.WIDTH / 2 - livesSize;
+  int healthSize = 20;
+  int leftHealthX = topAntiPaddle.x + topAntiPaddle.WIDTH / 2 - healthSize;
   rectMode(CENTER);
   fill(0,0,255);
   noStroke();
-  for (int i = ball.leftLives; i > 0; i--) {
-    rect(leftLivesX, 80, livesSize, livesSize / 2);
-    leftLivesX = leftLivesX - 10;
+  for (int i = ball.leftHealth; i > 0; i--) {
+    rect(leftHealthX, 80, healthSize, healthSize / 2);
+    leftHealthX = leftHealthX - 10;
   }
   
-  int rightLivesX = bottomAntiPaddle.x - bottomAntiPaddle.WIDTH / 2 + livesSize;
+  int rightHealthX = bottomAntiPaddle.x - bottomAntiPaddle.WIDTH / 2 + healthSize;
   fill(255,0,0);
-  for (int i = ball.rightLives; i > 0; i--) {
-    rect(rightLivesX, height - 80, livesSize, livesSize / 2);
-    rightLivesX = rightLivesX + 10;
+  for (int i = ball.rightHealth; i > 0; i--) {
+    rect(rightHealthX, height - 80, healthSize, healthSize / 2);
+    rightHealthX = rightHealthX + 10;
   }
   
   // Update the paddles and ball by calling their update methods
@@ -140,6 +192,12 @@ void draw() {
   
   // *ADDED* display for obstacle
   obstacle.display();
+  
+  
+    if (ball.leftScore >= 10 || ball.rightScore >= 10)
+  {
+    gameScreen = 2;
+  }
 }
 
 // keyPressed()
@@ -168,4 +226,12 @@ void keyReleased() {
   // *ADDED* Call both anti-paddles' keyReleased methods
   topAntiPaddle.keyReleased();
   bottomAntiPaddle.keyReleased();
+}
+
+// *ADDED* when mouse is pressed the new game starts.
+void mousePressed() {
+  if(gameScreen == 0 || gameScreen == 2)  {
+    gameScreen = 1;
+    ball.resetScores();
+  }
 }

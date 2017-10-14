@@ -29,8 +29,9 @@ class Ball {
   int ballPosition;
   int leftScore = 0;
   int rightScore = 0;
-  int leftLives = 7;
-  int rightLives = 7;
+  int leftHealth = 7;
+  int rightHealth = 7;
+  
   
   /////////////// Constructor ///////////////
 
@@ -160,12 +161,24 @@ class Ball {
       // If it was moving to the top
       if (vy < 0) {
         // Reset its position to align with the right side of the anti-paddle
+          // *ADDED* a condition that doesn't allow health go below 0. Once it reaches 0 it stays there
         y = antiPaddle.y + antiPaddle.HEIGHT/2 + SIZE/2;
-        leftLives = leftLives - 1;
-      } else if (vy > 0) {
+          if(leftHealth <= 0) {
+            leftHealth = 0;
+          }
+          else {
+            leftHealth = leftHealth - 1;
+          }
+        } 
+        else if (vy > 0) {
         // Reset its position to align with the left side of the anti-paddle
         y = antiPaddle.y - antiPaddle.HEIGHT/2 - SIZE/2;
-        rightLives = rightLives - 1;
+          if(rightHealth <= 0) {
+            rightHealth = 0;
+          }
+          else {
+            rightHealth = rightHealth - 1;
+          }
       }
       // And make it bounce
       vy = -vy;
@@ -187,6 +200,14 @@ class Ball {
       vx = -vx - floor(random(-10,10));
       vy = -vy;
     }
+  }
+
+  // *ADDED* This function will reset the scores when the new game starts
+  void resetScores() {
+    leftHealth = 7;
+    rightHealth = 7;
+    leftScore = 0;
+    rightScore = 0;
   }
 
   // display()
