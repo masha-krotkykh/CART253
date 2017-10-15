@@ -107,17 +107,31 @@ void endScreen() {
   myFont = loadFont("Blackflower-48.vlw");
   leftTotalScore = ball.leftScore + ball.leftHealth * 2;
   rightTotalScore = ball.rightScore + ball.rightHealth * 2;
+  fill(255);
+  textAlign(CENTER);
+  textFont(myFont);
+  
   if(leftTotalScore > rightTotalScore) {
     backgroundImage = loadImage("winner_left.jpg");
   }
   else if(leftTotalScore < rightTotalScore) {
     backgroundImage = loadImage("winner_right.jpg");
   }
+  // *ADDED* an end screen for a draw scenario
+  else if(leftTotalScore == rightTotalScore){
+    background(0);
+    text("EVERYONE IS A LOSER", width/2, height/2);
+  }
+  
+  // *ADDED* display health level and score on separate lines
+  int textXOffset = 70;
+  int textYOffset = 62;
   background(backgroundImage);
-  fill(255);
-  textAlign(CENTER);
-  textFont(myFont);
-  text("BLUE: " + leftTotalScore + " - " + "RED: " + rightTotalScore, width/2, height/4);  
+  text("WINNER!", width/2, textYOffset * 3);
+  text(ball.leftScore, textXOffset, textYOffset); 
+  text((ball.leftHealth * 2), textXOffset, textYOffset * 2);
+  text(ball.rightScore, width - textXOffset, textYOffset); 
+  text((ball.rightHealth * 2), width - textXOffset, textYOffset * 2);
 }
 
 // *CHANGED* all the game code is now inside gameScreen() function so itr only gets called when the mouse is clicked from
