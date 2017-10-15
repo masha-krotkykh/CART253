@@ -1,3 +1,4 @@
+
 // Pong
 //
 // A simple version of Pong using object-oriented programming.
@@ -21,6 +22,7 @@ Obstacle obstacle;
 
 // *ADDED* an image for the background
 PImage backgroundImage;
+PFont myFont;
 
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 30;
@@ -35,6 +37,7 @@ int gameScreen = 0;
 // *ADDED* variables to calculate the overall player's score at the end of the game
 int leftTotalScore;
 int rightTotalScore;
+
 
 // setup()
 //
@@ -64,6 +67,7 @@ void setup() {
 
   // Create the ball at the centre of the screen
   ball = new Ball(width/2, height/2);
+  
 
 }
 // draw()
@@ -72,13 +76,12 @@ void setup() {
 // if the ball has hit a paddle, and displaying everything.
 
 void draw() {
-  println(ball.leftHealth);
   // *ADDED* display the current screen according to the game stage
   // startScreen displays before the game begins and until the mouse is clicked
   if(gameScreen == 0) {
     startScreen(); 
   }
-  
+
   // endScreen displays when the game ends until the mouse is clicked
   else if(gameScreen == 2) {
     endScreen();
@@ -101,30 +104,30 @@ void startScreen() {
 // Scores are calculated as follows: game score + saved cakes * 2
 // Depending on who won end screen displays their portrait
 void endScreen() {
+  myFont = loadFont("Blackflower-48.vlw");
   leftTotalScore = ball.leftScore + ball.leftHealth * 2;
   rightTotalScore = ball.rightScore + ball.rightHealth * 2;
   if(leftTotalScore > rightTotalScore) {
     backgroundImage = loadImage("winner_left.jpg");
-    fill(0,0,255);
   }
   else if(leftTotalScore < rightTotalScore) {
     backgroundImage = loadImage("winner_right.jpg");
-    fill(255,0,0);
   }
   background(backgroundImage);
+  fill(255);
   textAlign(CENTER);
-  text("blue: " + leftTotalScore + " - " + "red: " + rightTotalScore, width/2, height/4);  
+  textFont(myFont);
+  text("BLUE: " + leftTotalScore + " - " + "RED: " + rightTotalScore, width/2, height/4);  
 }
 
 // *CHANGED* all the game code is now inside gameScreen() function so itr only gets called when the mouse is clicked from
 // the startScreen or the endScreen
 void gameScreen() {
-    
+  
   // *ADDED* load background image
   backgroundImage = loadImage("background.jpg");
   // Fill the background each frame so we have animation
   background(backgroundImage);
-  
   // *ADDED* display score
   fill(0,0,255,50);
   textSize(50);

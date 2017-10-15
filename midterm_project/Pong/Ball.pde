@@ -2,7 +2,6 @@
 //
 // A class that defines a ball that can move around in the window, bouncing
 // of the top and bottom, and can detect collision with a paddle and bounce off that.
-
 class Ball {
 
   /////////////// Properties ///////////////
