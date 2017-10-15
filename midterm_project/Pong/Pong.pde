@@ -25,7 +25,7 @@ PImage backgroundImage;
 // The distance from the edge of the window a paddle should be
 int PADDLE_INSET = 30;
 // *ADDED* The distance from the edge of the window an anti-paddle should be
-int ANTI_INSET = 25;
+int ANTI_INSET = 20;
 
 // The background colour during play (black)
 //color backgroundColor = color(255);
@@ -49,12 +49,15 @@ void setup() {
   // Also pass through the two keys used to control 'up' and 'down' respectively
   // NOTE: On a mac you can run into trouble if you use keys that create that popup of
   // different accented characters in text editors (so avoid those if you're changing this)
-  leftPaddle = new Paddle(PADDLE_INSET, height/2, "chameleon_blue_left.png", '1', 'q');
-  rightPaddle = new Paddle(width - PADDLE_INSET, height/2, "chameleon_red_right.png", '0', 'p');
+  // *CHANGED* check if the paddle is controlled by mouse
+  // if FALSE contrl the paddle with Up and Down arrows (Paddle class)
+  leftPaddle = new Paddle(PADDLE_INSET, height/2, "chameleon_blue_left.png", false);
+  // if true, position the paddle at mouseY (Paddle class)
+  rightPaddle = new Paddle(width - PADDLE_INSET, height/2, "chameleon_red_right.png", true);
   
   // *ADDED* top and bottom "anti-paddles" that are controlled with same keys as corresponding paddles (right-bottom, left-top)
-  topAntiPaddle = new AntiPaddle(width/2, ANTI_INSET, "cake_blue_top.png", '1', 'q');
-  bottomAntiPaddle = new AntiPaddle(width/2, height - ANTI_INSET, "cake_red_bottom.png", '0', 'p');
+  topAntiPaddle = new AntiPaddle(width/2, ANTI_INSET, "cake_blue_top.png", false);
+  bottomAntiPaddle = new AntiPaddle(width/2, height - ANTI_INSET, "cake_red_bottom.png", true);
 
   // *ADDED* an obstacle moving up and down the middle of the screen
   obstacle = new Obstacle(width/2, height/3);
@@ -110,7 +113,7 @@ void endScreen() {
   }
   background(backgroundImage);
   textAlign(CENTER);
-  text(leftTotalScore + ":" + rightTotalScore, width/2, height/4);  
+  text("blue: " + leftTotalScore + " - " + "red: " + rightTotalScore, width/2, height/4);  
 }
 
 // *CHANGED* all the game code is now inside gameScreen() function so itr only gets called when the mouse is clicked from

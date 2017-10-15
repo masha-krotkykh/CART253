@@ -8,7 +8,7 @@ class Paddle {
   /////////////// Properties ///////////////
 
   // Default values for speed and size
-  int SPEED = 5;
+  int SPEED = 10;
   int HEIGHT = 150;
   int WIDTH = 40;
 
@@ -28,6 +28,7 @@ class Paddle {
   
   // *ADDED* PImage to display image instead the paddle
   PImage image;
+  boolean usesMouse;
 
 
   /////////////// Constructor ///////////////
@@ -37,16 +38,15 @@ class Paddle {
   // Sets the position and controls based on arguments,
   // starts the velocity at 0
 
-  Paddle(int _x, int _y, String _image, char _upKey, char _downKey) {
+  Paddle(int _x, int _y, String _image, boolean _usesMouse) {
     x = _x;
     y = _y;
     vx = 0;
     vy = 0;
 
     image = loadImage(_image);
+    usesMouse = _usesMouse;
 
-    upKey = _upKey;
-    downKey = _downKey;
   }
 
 
@@ -61,6 +61,11 @@ class Paddle {
     x += vx;
     y += vy;
 
+// *ADDED* if is controlled by mouse, move paddle to the position of the mouse pointer on Y-axis    
+    if (usesMouse) {
+      y = mouseY;
+    }
+    
     // Constrain the paddle's y position to be in the window
     y = constrain(y,0 + HEIGHT/2,height - HEIGHT/2);
   }
@@ -82,16 +87,18 @@ class Paddle {
   // keyPressed()
   //
   // Called when keyPressed is called in the main program
-  
+  // *CHANGED* If is not controlled by mouse, controlled by Up and Down arrows
   void keyPressed() {
     // Check if the key is our up key
-    if (key == upKey) {
+    if (key == CODED) {
       // If so we want a negative y velocity
+      if (keyCode == UP) {
       vy = -SPEED;
-    } // Otherwise check if the key is our down key 
-    else if (key == downKey) {
+      } // Otherwise check if the key is our down key 
+      else if (keyCode == DOWN) {
       // If so we want a positive y velocity
       vy = SPEED;
+      }
     }
   }
 
@@ -101,11 +108,11 @@ class Paddle {
 
   void keyReleased() {
     // Check if the key is our up key and the paddle is moving up
-    if (key == upKey && vy < 0) {
+    if (keyCode == UP && vy < 0) {
       // If so it should stop
       vy = 0;
     } // Otherwise check if the key is our down key and paddle is moving down 
-    else if (key == downKey && vy > 0) {
+    else if (keyCode == DOWN && vy > 0) {
       // If so it should stop
       vy = 0;
     }

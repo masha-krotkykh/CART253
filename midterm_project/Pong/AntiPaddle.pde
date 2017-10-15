@@ -8,8 +8,8 @@ class AntiPaddle {
   /////////////// Properties ///////////////
 
   // Default values for speed and size
-  int SPEED = 5;
-  int HEIGHT = 10;
+  int SPEED = 10;
+  int HEIGHT = 30;
   int WIDTH = 100;
 
   // The position and velocity of the anti-paddle (note that vy isn't really used right now)
@@ -24,6 +24,7 @@ class AntiPaddle {
   
   // *ADDED* PImage to display image instead the anti-paddle
   PImage image;
+  boolean usesMouse;
 
   /////////////// Constructor ///////////////
 
@@ -32,17 +33,17 @@ class AntiPaddle {
   // Sets the position and controls based on arguments,
   // starts the velocity at 0
 
-  AntiPaddle(int _x, int _y, String _image, char _leftKey, char _rightKey) {
+  AntiPaddle(int _x, int _y, String _image, boolean _usesMouse) {
     x = _x;
     y = _y;
     vx = 0;
     vy = 0;
 
-    leftKey = _leftKey;
-    rightKey = _rightKey;
     
     // *ADDED* PImage to display image instead the anti-paddle
     image = loadImage(_image);
+    
+    usesMouse = _usesMouse;
   }
 
 
@@ -56,9 +57,15 @@ class AntiPaddle {
     // Update position with velocity (to move the paddle)
     x += vx;
     y += vy;
-
-    // Constrain the paddle's y position to be in the window
-    x = constrain(x, 0 + WIDTH/2, width - WIDTH/2);
+    
+    // *ADDED* if is controlled by mouse, move paddle on X-axis to the position of -mouseY    
+    if(usesMouse) {
+      x = width - mouseY;
+    }
+    
+      // Constrain the paddle's y position to be in the window
+      x = constrain(x, 0 + WIDTH/2, width - WIDTH/2);
+    
   }
 
   // display()
@@ -75,16 +82,18 @@ class AntiPaddle {
   // keyPressed()
   //
   // Called when keyPressed is called in the main program
-  
+  // *CHANGED* If is not controlled by mouse, controlled by Up and Down arrows
   void keyPressed() {
-    // Check if the key is our left key
-    if (key == leftKey) {
-      // If so we want a negative y velocity
-      vx = -SPEED;
-    } // Otherwise check if the key is our down key 
-    else if (key == rightKey) {
-      // If so we want a positive y velocity
+    // Check if the key is our up key
+    if (key == CODED) {
+      // If so we want a positive x velocity
+      if (keyCode == UP) {
       vx = SPEED;
+      } // Otherwise check if the key is our down key 
+      else if (keyCode == DOWN) {
+      // If so we want a negative x velocity
+      vx = -SPEED;
+      }
     }
   }
 
@@ -94,11 +103,11 @@ class AntiPaddle {
 
   void keyReleased() {
     // Check if the key is our up left and the paddle is moving right
-    if (key == leftKey && vx < 0) {
+    if (keyCode == DOWN && vx < 0) {
       // If so it should stop
       vx = 0;
     } // Otherwise check if the key is our down key and paddle is moving down 
-    else if (key == rightKey && vx > 0) {
+    else if (keyCode == UP && vx > 0) {
       // If so it should stop
       vx = 0;
     }
