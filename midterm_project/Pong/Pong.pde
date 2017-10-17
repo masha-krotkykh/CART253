@@ -17,7 +17,7 @@ Ball ball;
 // *ADDED* variable for "anti-paddles" - top and bottom paddles that should avoid collisions
 AntiPaddle topAntiPaddle;
 AntiPaddle bottomAntiPaddle;
-
+// *ADDED* variable for obstacle that will cause the ball change it's speed randomly and direction upon collision
 Obstacle obstacle;
 
 // *ADDED* an image for the background
@@ -104,12 +104,10 @@ void startScreen() {
 // Scores are calculated as follows: game score + saved cakes * 2
 // Depending on who won end screen displays their portrait
 void endScreen() {
-  myFont = loadFont("Blackflower-48.vlw");
   leftTotalScore = ball.leftScore + ball.leftHealth * 2;
   rightTotalScore = ball.rightScore + ball.rightHealth * 2;
   fill(255);
   textAlign(CENTER);
-  textFont(myFont);
   
   if(leftTotalScore > rightTotalScore) {
     backgroundImage = loadImage("winner_left.jpg");
@@ -145,6 +143,8 @@ void gameScreen() {
   // *ADDED* display score
   fill(0,0,255,50);
   textSize(50);
+  myFont = loadFont("Blackflower-48.vlw");
+  textFont(myFont);
   textAlign(CENTER);
   text(ball.leftScore, leftPaddle.x + leftPaddle.WIDTH + PADDLE_INSET, leftPaddle.y);
   fill(255,0,0,50);

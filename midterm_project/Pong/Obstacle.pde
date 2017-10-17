@@ -1,4 +1,5 @@
 // *ADDED* a new class for an obstacle that moves up and down the center of the screen
+// and changes the velocity and direction of the ball upon collision
 //-----PROPERTIES-----
 class Obstacle {
 
@@ -8,6 +9,8 @@ class Obstacle {
   int obstacleWidth = 10;
   int vy;
   int speed = 3;
+  
+ // Declaring a variable for an image to be used instead of the obstacle
   PImage image;
   
   Obstacle(int tempX, int tempY) {

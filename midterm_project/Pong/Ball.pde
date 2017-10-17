@@ -24,8 +24,10 @@ class Ball {
   // *ADDED* an image to display instead of the ball
   PImage image;
    
-  // *ADDED* New variables for tracking score and detecting if the ball is off screen
+  // *ADDED* New variables to detect if the ball is off screen
   int ballPosition;
+  
+  // *ADDED* New variables for tracking score
   int leftScore = 0;
   int rightScore = 0;
   int leftHealth = 7;
@@ -226,11 +228,12 @@ class Ball {
   // *ADDED* The ball is displayed as an image of a fly.
   // check which direction the "ball" is moving, flipping the fly accordingly by
   // substituting the image
-        if(vx > 0) {
+    if(vx > 0) {
       image = loadImage("fly_right.png");
     }
     else if (vx < 0) {
       image = loadImage("fly_left.png");
+      
     }  
     imageMode(CENTER);
     image(image,x,y);
