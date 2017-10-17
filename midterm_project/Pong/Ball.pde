@@ -27,9 +27,7 @@ class Ball {
   // *ADDED* New variables to detect if the ball is off screen
   int ballPosition;
   
-  // *ADDED* New variables for tracking score
-  int leftScore = 0;
-  int rightScore = 0;
+  // *ADDED* New variables for tracking health level
   int leftHealth = 7;
   int rightHealth = 7;
   
@@ -103,11 +101,9 @@ class Ball {
   int offScreen() {
       if(x + SIZE/2 < 0) {
         ballPosition = 1;
-        rightScore = rightScore + 1;
       }
       else if(x - SIZE/2 > width) {
         ballPosition = 2;
-        leftScore = leftScore + 1;
       }
       else {
         ballPosition = 0;

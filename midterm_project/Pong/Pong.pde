@@ -34,6 +34,10 @@ int ANTI_INSET = 20;
 
 int gameScreen = 0;
 
+//*MOVED* variables for tracking score
+int leftScore = 0;
+int rightScore = 0;
+
 // *ADDED* variables to calculate the overall player's score at the end of the game
 int leftTotalScore;
 int rightTotalScore;
@@ -104,8 +108,8 @@ void startScreen() {
 // Scores are calculated as follows: game score + saved cakes * 2
 // Depending on who won end screen displays their portrait
 void endScreen() {
-  leftTotalScore = ball.leftScore + ball.leftHealth * 2;
-  rightTotalScore = ball.rightScore + ball.rightHealth * 2;
+  leftTotalScore = leftScore + ball.leftHealth * 2;
+  rightTotalScore = rightScore + ball.rightHealth * 2;
   fill(255);
   textAlign(CENTER);
   
@@ -126,9 +130,9 @@ void endScreen() {
   int textYOffset = 62;
   background(backgroundImage);
   text("WINNER!", width/2, textYOffset * 3);
-  text(ball.leftScore, textXOffset, textYOffset); 
+  text(leftScore, textXOffset, textYOffset); 
   text((ball.leftHealth * 2), textXOffset, textYOffset * 2);
-  text(ball.rightScore, width - textXOffset, textYOffset); 
+  text(rightScore, width - textXOffset, textYOffset); 
   text((ball.rightHealth * 2), width - textXOffset, textYOffset * 2);
 }
 
@@ -140,15 +144,24 @@ void gameScreen() {
   backgroundImage = loadImage("background.jpg");
   // Fill the background each frame so we have animation
   background(backgroundImage);
+  
+  //*MOVED* score tracking
+  if(ball.ballPosition == 1) {
+    rightScore = rightScore + 1;
+  } 
+  else if(ball.ballPosition == 2) {
+    leftScore = leftScore + 1;
+  }
+  
   // *ADDED* display score
   fill(0,0,255,50);
   textSize(50);
   myFont = loadFont("Blackflower-48.vlw");
   textFont(myFont);
   textAlign(CENTER);
-  text(ball.leftScore, leftPaddle.x + leftPaddle.WIDTH + PADDLE_INSET, leftPaddle.y);
+  text(leftScore, leftPaddle.x + leftPaddle.WIDTH + PADDLE_INSET, leftPaddle.y);
   fill(255,0,0,50);
-  text(ball.rightScore, rightPaddle.x - rightPaddle.WIDTH - PADDLE_INSET, rightPaddle.y);
+  text(rightScore, rightPaddle.x - rightPaddle.WIDTH - PADDLE_INSET, rightPaddle.y);
   
   
   int healthSize = 20;
@@ -214,7 +227,7 @@ void gameScreen() {
   obstacle.display();
   
   
-    if (ball.leftScore >= 10 || ball.rightScore >= 10)
+    if (leftScore >= 10 || rightScore >= 10)
   {
     gameScreen = 2;
   }
