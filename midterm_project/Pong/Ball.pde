@@ -26,11 +26,7 @@ class Ball {
    
   // *ADDED* New variables to detect if the ball is off screen
   int ballPosition;
-  
-  // *ADDED* New variables for tracking health level
-  int leftHealth = 7;
-  int rightHealth = 7;
-  
+
   
   /////////////// Constructor ///////////////
 
@@ -197,14 +193,6 @@ class Ball {
       vx = -vx - floor(random(-10,10));
       vy = -vy;
     }
-  }
-
-  // *ADDED* This function will reset the scores when the new game starts
-  void resetScores() {
-    leftHealth = 7;
-    rightHealth = 7;
-    leftScore = 0;
-    rightScore = 0;
   }
 
   // display()

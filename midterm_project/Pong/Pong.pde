@@ -37,6 +37,10 @@ int gameScreen = 0;
 //*MOVED* variables for tracking score
 int leftScore = 0;
 int rightScore = 0;
+ 
+// *ADDED* New variables for tracking health level
+int leftHealth = 7;
+int rightHealth = 7;
 
 // *ADDED* variables to calculate the overall player's score at the end of the game
 int leftTotalScore;
@@ -108,8 +112,8 @@ void startScreen() {
 // Scores are calculated as follows: game score + saved cakes * 2
 // Depending on who won end screen displays their portrait
 void endScreen() {
-  leftTotalScore = leftScore + ball.leftHealth * 2;
-  rightTotalScore = rightScore + ball.rightHealth * 2;
+  leftTotalScore = leftScore + leftHealth * 2;
+  rightTotalScore = rightScore + rightHealth * 2;
   fill(255);
   textAlign(CENTER);
   
@@ -131,9 +135,9 @@ void endScreen() {
   background(backgroundImage);
   text("WINNER!", width/2, textYOffset * 3);
   text(leftScore, textXOffset, textYOffset); 
-  text((ball.leftHealth * 2), textXOffset, textYOffset * 2);
+  text((leftHealth * 2), textXOffset, textYOffset * 2);
   text(rightScore, width - textXOffset, textYOffset); 
-  text((ball.rightHealth * 2), width - textXOffset, textYOffset * 2);
+  text((rightHealth * 2), width - textXOffset, textYOffset * 2);
 }
 
 // *CHANGED* all the game code is now inside gameScreen() function so itr only gets called when the mouse is clicked from
@@ -169,14 +173,14 @@ void gameScreen() {
   rectMode(CENTER);
   fill(0,0,255);
   noStroke();
-  for (int i = ball.leftHealth; i > 0; i--) {
+  for (int i = leftHealth; i > 0; i--) {
     rect(leftHealthX, 80, healthSize, healthSize / 2);
     leftHealthX = leftHealthX - 10;
   }
   
   int rightHealthX = bottomAntiPaddle.x - bottomAntiPaddle.WIDTH / 2 + healthSize;
   fill(255,0,0);
-  for (int i = ball.rightHealth; i > 0; i--) {
+  for (int i = rightHealth; i > 0; i--) {
     rect(rightHealthX, height - 80, healthSize, healthSize / 2);
     rightHealthX = rightHealthX + 10;
   }
@@ -265,6 +269,14 @@ void keyReleased() {
 void mousePressed() {
   if(gameScreen == 0 || gameScreen == 2)  {
     gameScreen = 1;
-    ball.resetScores();
+    resetScores();
   }
+}
+
+// *MOVED* This function will reset the scores when the new game starts
+void resetScores() {
+  leftHealth = 7;
+  rightHealth = 7;
+  leftScore = 0;
+  rightScore = 0;
 }
