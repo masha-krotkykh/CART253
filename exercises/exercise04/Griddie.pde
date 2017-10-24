@@ -101,6 +101,7 @@ class Griddie {
       energy = constrain(energy,0,maxEnergy);
     }
   }
+  
 
   // display()
   //

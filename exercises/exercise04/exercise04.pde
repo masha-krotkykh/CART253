@@ -1,15 +1,17 @@
 // Griddies
 // by Pippin Barr
 // MODIFIED BY: 
-//
+// Masha Krotkykh
 // A simple artificial life system on a grid. The "griddies" are squares that move
 // around randomly, using energy to do so. They gain energy by overlapping with
 // other griddies. If a griddie loses all its energy it dies.
 
 // The size of a single grid element
 int gridSize = 20;
+int zombieSize = 10;
 // An array storing all the griddies
 Griddie[] griddies = new Griddie[100];
+Zombie[] zombies = new Zombie[10];
 
 // setup()
 //
@@ -18,7 +20,7 @@ Griddie[] griddies = new Griddie[100];
 void setup() {
   // Set up the window size and framerate (lower so we can watch easier)
   size(640, 480);
-  frameRate(10);
+  frameRate(20);
 
   // QUESTION: What does this for loop do?
   // ANSWER: It generates new griddies from the array until their number reaches the total number of the array (100). 
@@ -29,12 +31,19 @@ void setup() {
     int y = floor(random(0, height/gridSize));
     griddies[i] = new Griddie(x * gridSize, y * gridSize, gridSize);
   }
+  
+  // *CHANGED* adding zombie elements and defining their position and size.
+  for (int z = 0; z < zombies.length; z++) {
+    int x = floor(random(0, width/gridSize));
+    int y = floor(random(0, height/gridSize));
+    zombies[z] = new Zombie(x * gridSize, y* gridSize, zombieSize);
+  }
 }
 
 // draw()
 //
 // Update all the griddies, check for collisions between them, display them.
-
+// *CHANGED* Update all the zombies, check for collisions with griddies, display them.
 void draw() {
   background(50);
 
@@ -56,7 +65,22 @@ void draw() {
       }
     }
     
+    
     // Display the griddies
     griddies[i].display();
+  }
+  
+  // *CHANGED* Loop through all the zombies one by one 
+  for (int z = 0; z < zombies.length; z++) {
+  
+    // *CHANGED* pdate the zombies
+    zombies[z].update();
+    
+    // *CHANGED* Loop through all the griddies and checks if there was a collision between a zombie and a griddie
+    for (int i = 0; i < griddies.length; i++) {
+      zombies[z].collide(griddies[i]);
+    }
+    
+    zombies[z].display();
   }
 }
