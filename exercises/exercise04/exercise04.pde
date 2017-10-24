@@ -21,6 +21,9 @@ void setup() {
   frameRate(10);
 
   // QUESTION: What does this for loop do?
+  // ANSWER: It generates new griddies from the array until their number reaches the total number of the array (100). 
+  // Each individual griddie has it's random x- and y- coordinates within a given space in increments of 20px on
+  // both x- and y- (so that they don't partially overlap?)
   for (int i = 0; i < griddies.length; i++) {
     int x = floor(random(0, width/gridSize));
     int y = floor(random(0, height/gridSize));
@@ -44,8 +47,11 @@ void draw() {
     // Now go through all the griddies a second time...
     for (int j = 0; j < griddies.length; j++) {
       // QUESTION: What is this if-statement for?
+      // ANSWER: To check if there are two or more different griddies (with different indexes) in the same location
       if (j != i) {
         // QUESTION: What does this line check?
+        // ANSWER: It checks for collisions between griddies. If there are two griddies with the same coordinates and they are !not the same
+        // griddie than there was a collision
         griddies[i].collide(griddies[j]);
       }
     }
