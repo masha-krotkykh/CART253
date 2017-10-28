@@ -4,6 +4,8 @@
 Octie octie;
 YellowFish yellowFish;
 YellowFish yellowFish2;
+BlueFish blueFish;
+ClownFish clownFish;
 int score = 0;
 
 // Putting two fishes on the either side of the bowl and Octie in the center
@@ -11,6 +13,8 @@ void setup() {
   size(500,500);
   yellowFish = new YellowFish(0,50);
   yellowFish2 = new YellowFish(width, 200);
+  blueFish = new BlueFish(0, 400);
+  clownFish = new ClownFish(width, 300);
   octie = new Octie(width/2, height/2); 
 }
 
@@ -19,9 +23,13 @@ void draw() {
   octie.update();  
   yellowFish.update();
   yellowFish2.update();
+  blueFish.update();
+  clownFish.update();
   octie.display();
   yellowFish.display();
   yellowFish2.display();
+  blueFish.display();
+  clownFish.display();
   
  // Calculating the score 
   int yellowScore = yellowFish.score * 2;
