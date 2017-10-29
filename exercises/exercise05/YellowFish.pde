@@ -6,17 +6,16 @@ class YellowFish {
   float x;
   float y;
   float vx;
-  int speed = 5;
+  int speed = 3;
   PImage image;
   int fishWidth = 50;
   int fishHeight = 30;
-  int score = 0;
   int shiftY = 50;
   
-  YellowFish(float tempX, float tempY) {
+  YellowFish(float tempX, float tempY, float tempVX) {
    x = tempX;
    y = tempY;
-   vx = speed;
+   vx = tempVX;
    
   }
   
@@ -56,10 +55,12 @@ class YellowFish {
     
     // Upon collision with Octie increases Octie's score and resests it's x-coordinates to 0 and jumps down 50px
     if (insideLeft && insideRight && insideTop && insideBottom) {
+
       x = 0 - fishWidth/2 ;
       y = y + shiftY;
-      score = score + 1;
+      score = score + 50;
     }
+    
         
     // if y is bigger than the height or smaller than 0, "wraps" around the window and shows up at the top or down at the bottom
     if (y > height) {

@@ -10,7 +10,6 @@ class ClownFish {
   PImage image;
   int fishWidth = 50;
   int fishHeight = 25;
-  int score = 0;
   int shiftY = 70;
   
   ClownFish(float tempX, float tempY) {
@@ -58,7 +57,7 @@ class ClownFish {
     if (insideLeft && insideRight && insideTop && insideBottom) {
       x = 0 - fishWidth/2 ;
       y = y + shiftY;
-      score = score + 1;
+      score = score + 20;
     }
     
     // if y is bigger than the height or smaller than 0, "wraps" around the window and shows up at the top or down at the bottom

@@ -11,7 +11,7 @@ class Octie {
   int jump = 30;
   int WIDTH = 40;
   int HEIGHT = 40;
-  
+  int yellowScore = 0;
   
   Octie(float tempX, float tempY) {
     x = tempX;
@@ -28,7 +28,6 @@ class Octie {
     // small time increments for smoother movements
     tx += 0.01;
     ty += 0.01;
-    
     
     // "wraps" around the window when goes off the edge
     // on x-axis
