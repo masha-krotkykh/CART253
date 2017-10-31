@@ -57,7 +57,7 @@ void draw() {
   }
   // Display timer and scores
   text("Time left: " + countDown, width/4 * 3, 50);
-  text("Your score: " + floor(score/10), 50, 50);
+  text("Your score: " + floor(score/10), 30, 50);
   
   // Update and display Octie
   octie.update();  
