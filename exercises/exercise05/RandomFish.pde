@@ -1,47 +1,50 @@
-// Class for clown fish that swims from left to right (or right to left) across the screen
-// upon collision with Octie increases Octie's score and resests it's x-coordinates to 0 and jumps down
+// Class for random fish that swims from left to right (or right to left) across the screen
+// upon collision with Octie increases Octie's score and resests it's x-coordinates to 0 and randomly changes y-position
 
-class ClownFish {
+class RandomFish {
 
   float x;
   float y;
   float vx;
-  int speed = 8;
-  PImage image;
-  int fishWidth = 50;
-  int fishHeight = 25;
-  int shiftY = 70;
+  int speed = floor(random(3,8));
+  int fishWidth = 60;
+  int fishHeight = 30;
+  int shiftY = 30 * floor(random(-4,5));
+  PImage fishPic;
+  int collision = 0;
   
-  ClownFish(float tempX, float tempY) {
+  RandomFish(PImage tempFishPic, float tempX, float tempY, float tempVX) {
    x = tempX;
    y = tempY;
-   vx = speed;
-   
+   vx = tempVX;
+   fishPic = tempFishPic;
+
   }
   
-  // Changes velocity randomly within small limits
   void update() {
-    x += vx * random(0.3,1);
+    imageMode(CENTER);
+    // Changes velocity randomly within small limits
+    x += vx * random(0.1,1);
     // Changes direction when reaches the edge of the window
-    if (x - fishWidth/2 >= width || x + fishWidth <= 0) {
+    if (x - fishWidth >= width || x + fishWidth <= 0) {
       vx = -vx;
+      y = y + shiftY;
     }
     
   }
   void display() {
-    image = loadImage("clown_fish.png");
-    imageMode(CENTER);
+
     
     // Flip the image on x-axis when the velocity is negative
     if (vx < 0) {  
       pushMatrix();
       translate(x,y);
       scale(-1,1);
-      image(image, -image.width,0);
+      image(fishPic, -fishPic.width,0);
       popMatrix();
     }
     else {
-      image(image,x,y);
+      image(fishPic,x,y);
     }
   }
   
@@ -53,13 +56,15 @@ class ClownFish {
     boolean insideTop = (y + fishHeight/2 > octie.y - octie.HEIGHT/2);
     boolean insideBottom = (y - fishHeight/2 < octie.y + octie.HEIGHT/2);
     
-    // Upon collision with Octie increases Octie's score and resests it's x-coordinates to 0 and jumps down 70px
+    // Upon collision with Octie increases Octie's score and resests it's x-coordinates to 0 and jumps randomly on y-axis
     if (insideLeft && insideRight && insideTop && insideBottom) {
+
       x = 0 - fishWidth/2 ;
       y = y + shiftY;
-      score = score + 20;
+      collision = collision + 1;
     }
     
+        
     // if y is bigger than the height or smaller than 0, "wraps" around the window and shows up at the top or down at the bottom
     if (y > height) {
       y = y - height;

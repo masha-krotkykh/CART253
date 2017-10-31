@@ -10,7 +10,8 @@ class BlueFish {
   PImage image;
   int fishWidth = 50;
   int fishHeight = 40;
-  int shiftY = 100;
+  int shiftY = 10 * floor(random(-5,6));
+  int collision = 0;
   
   BlueFish(float tempX, float tempY, float tempVX) {
    x = tempX;
@@ -25,6 +26,7 @@ class BlueFish {
     // Changes direction when reaches the edge of the window
     if (x - fishWidth/2 >= width || x + fishWidth <= 0) {
       vx = -vx;
+      y = y + shiftY;
     }
     
   }
@@ -57,7 +59,7 @@ class BlueFish {
     if (insideLeft && insideRight && insideTop && insideBottom) {
       x = 0 - fishWidth/2 ;
       y = y + shiftY;
-      score = score + 100;
+      collision = collision + 1;
       
       // Catching a blue fish stops the timer
       timerRunning = false;
@@ -69,6 +71,6 @@ class BlueFish {
     }
     else if (y < 0) {
       y = y + height;
-    }
+    }    
   }
 }
