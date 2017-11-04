@@ -15,6 +15,7 @@ PVector brightestPixel = new PVector(-1,-1);
 
 // An array of bouncers to play with
 Bouncer[] bouncers = new Bouncer[10];
+int aimSize = 20;
 
 // setup()
 //
@@ -55,13 +56,16 @@ void draw() {
   for (int i = 0; i < bouncers.length; i++) {
    bouncers[i].update();
    bouncers[i].display();
+   
+  // *ADDED* Loop throught bouncers and call the hit() function   
+   bouncers[i].hit();
   }
   
   // For now we just draw a crappy ellipse at the brightest pixel
   fill(#ff0000);
   stroke(#ffff00);
   strokeWeight(10);
-  ellipse(brightestPixel.x,brightestPixel.y,20,20);
+  ellipse(brightestPixel.x,brightestPixel.y,aimSize,aimSize);
 }
 
 // handleVideoInput

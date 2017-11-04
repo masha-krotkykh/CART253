@@ -79,4 +79,19 @@ class Bouncer {
     fill(fillColor);
     ellipse(x, y, size, size);
   }
+  
+  // *ADDED* Detect if the brightest spot overlaps with a bouncer     
+  void hit() {
+    boolean insideLeft = (x + size/2 > brightestPixel.x - aimSize/2);
+    boolean insideRight = (x - size/2 < brightestPixel.x + aimSize/2);
+    boolean insideTop = (y + size/2 > brightestPixel.y - aimSize/2);
+    boolean insideBottom = (y - size/2 < brightestPixel.y + aimSize/2);
+    
+    // And if so and a key is pressed, the bouncer stops and changes its fill to half-transparent red
+    if (insideLeft && insideRight && insideTop && insideBottom && keyPressed) {
+      vx = 0;
+      vy = 0;
+      fillColor = color(255,0,0,80);
+    }
+  }  
 }
