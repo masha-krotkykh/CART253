@@ -23,7 +23,6 @@ int aimSize = 20;
 
 void setup() {
   size(640, 480);
-
   // Our old friend the for-loop used to go through the length of an
   // array adding new objects to it (Bouncers in this case)
   for (int i = 0; i < bouncers.length; i++) {
@@ -62,10 +61,12 @@ void draw() {
   }
   
   // For now we just draw a crappy ellipse at the brightest pixel
-  fill(#ff0000);
-  stroke(#ffff00);
-  strokeWeight(10);
+  noFill();
+  stroke(0);
+  strokeWeight(2);
   ellipse(brightestPixel.x,brightestPixel.y,aimSize,aimSize);
+  line(brightestPixel.x - 15,brightestPixel.y,brightestPixel.x + 15,brightestPixel.y);
+  line(brightestPixel.x,brightestPixel.y - 15,brightestPixel.x,brightestPixel.y + 15);
 }
 
 // handleVideoInput

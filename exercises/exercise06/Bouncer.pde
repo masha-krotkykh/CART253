@@ -22,6 +22,7 @@ class Bouncer {
   // The default fill colour of the Bouncer
   color defaultColor;
 
+
   // Bouncer(tempX,tempY,tempVX,tempVY,tempSize,tempDefaultColor)
   //
   // Creates a Bouncer with the provided values by remembering them.
@@ -75,9 +76,16 @@ class Bouncer {
   // Draw an ellipse in the Bouncer's location, with its size
   // and with its fill
   void display() {
+    // *ADDED* some lines to turn bouncers into bugs
+    stroke(fillColor);
+    line(x-size/2, y-size/3, x+size/2, y-size/3);
+    line(x-size/1.5, y, x+size/1.5, y);
+    line(x-size/2, y+size/3, x+size/2, y+size/3);
+    line(x,y-size/2,x-size/3, y-size);
+    line(x,y-size/2,x+size/3, y-size);
     noStroke();
     fill(fillColor);
-    ellipse(x, y, size, size);
+    ellipse(x, y, size/1.2, size);
   }
   
   // *ADDED* Detect if the brightest spot overlaps with a bouncer     
@@ -91,7 +99,7 @@ class Bouncer {
     if (insideLeft && insideRight && insideTop && insideBottom && keyPressed) {
       vx = 0;
       vy = 0;
-      fillColor = color(255,0,0,80);
+      fillColor = color(255,0,0,90);
     }
   }  
 }
