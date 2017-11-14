@@ -28,8 +28,9 @@ void setup() {
   tones[6] = minim.loadFile("06.wav");
   
  //Construct ball objects and attribute an individual sound to each of them 
+ //Assigned a stop ey for each ball (1-7)
   for (int i = 0; i < balls.length; i++) {
-    balls[i] = new Ball(((i+1) * width/8), 40, 0, 80, color(255 - i*20,0,0 + i * 20), "0" + 1 + ".wav");
+    balls[i] = new Ball(((i+1) * width/8), 40, 0, 80, color(255 - i*20,0,0 + i * 20), "0" + 1 + ".wav", Character.forDigit(i+1,10));
   }
 }
 

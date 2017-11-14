@@ -13,15 +13,17 @@ class Ball {
   // a variable to be able to increase a ball's velocity on click
   float speedUp = 0.5;
   String tone;
+  char stopKey;
 
   // Create a Ball with the provided values
-  Ball (float tempX, float tempY, int tempVY, float tempSize, color tempFillColor, String tempTone) {
+  Ball (float tempX, float tempY, int tempVY, float tempSize, color tempFillColor, String tempTone, char tempStopKey) {
     x = tempX;
     y = tempY;
     vy = tempVY;
     size = tempSize;
     fillColor = tempFillColor;
     tone = tempTone;   
+    stopKey = tempStopKey;
   }
   
   // Update Ball by velocity
@@ -60,10 +62,10 @@ class Ball {
       } 
     }
     
-  // Function to stop a ball when the mouse pointer is inside its x-space and any key is pressed
+  // Function to stop a ball when the stop key is pressed
   }
     void stopped() {
-    if (mouseX >= x - size/2 && mouseX <= x + size/2 && keyPressed) {
+    if (keyCode == stopKey) {
       vy = 0;
 
     }
