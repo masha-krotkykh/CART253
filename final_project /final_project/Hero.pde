@@ -1,3 +1,5 @@
+// Class hor "hero" a fishing hook
+// Declaring basic variables (position, size, velocity and speed)
 
 class Hero {
   float x;
@@ -5,35 +7,38 @@ class Hero {
   float vx;
   float vy;
   PImage heroImg;
-  int WIDTH;
-  int HEIGHT;
+  int WIDTH = 24;
+  int HEIGHT = 87;
   int speed = 1;
-  
-  Hero( float tempX, float tempY) {
+
+  // Constructing a template for hero
+  Hero(PImage tempHeroImg, float tempX, float tempY) {
     x = tempX;
     y = tempY;
-    //heroImg = tempHeroImg;
+    heroImg = tempHeroImg;
   }
-  
+ 
+  // Moves by velocity
   void update() {
     x += vx;
     y += vy;
-
   }
   
+  // Displaying the fishing hook 
   void display() {
-    rectMode(CENTER);
-    noStroke();
-    fill(255);
-    rect(x,y,10,50);
-    stroke(255);
+    imageMode(CENTER);
+    image(heroImg,x,y);
+    // and fishing line
+    stroke(0);
     line (x,0,x,y);
-    x = constrain(x,0,width);
-    y = constrain(y,0,height);
+    // The hook is constrained within the window
+    x = constrain(x, 0 + WIDTH/2, width - WIDTH/2);
+    y = constrain(y, -HEIGHT/2, height - HEIGHT/2);
   }
   
-  void controlls() {
-    if (keyPressed) {
+  // The hook is controlled with arrow keys
+  void keyPressed() {
+    if (key == CODED) {
       if (keyCode == UP) {
         vy = -speed;
       }
