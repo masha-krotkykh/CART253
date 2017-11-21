@@ -1,31 +1,36 @@
-// Class for fishes that are to be caught
+// Class for fishes that are to be avoided
 // Declaring basic parameters: position, velocity, speed, size...
 
-class PrizeFish {
+class NastyFish {
   float x;
   float y;
   float vx;
   float vy;
-  int speed = floor (random(3,8));
-  PImage prizeFishPic;
-  float fishWidth = 300;
+  int speed = floor (random(1,8));
+  PImage nastyFishPic;
+  float fishWidth = 100;
   int fishHeight = 50;
+  float tx = random(10,100);
+  float ty = random(10,100);
   
   // Constructing a template for fish instances with given parameters
-  PrizeFish(PImage tempPrizeFishPic, float tempX, float tempY, float tempVX, float tempVY) {
+  NastyFish(PImage tempNastyFishPic, float tempX, float tempY) {
     x = tempX;
     y = tempY;
-    vx = tempVX;
-    vy = tempVY;
-    prizeFishPic = tempPrizeFishPic;
+    nastyFishPic = tempNastyFishPic;
   }
   
 
   void update() {
-    // Changes X-velocity randomly within small limits to give more organic movement
-    // Moves forward by velocity
-    x += vx * random(0.1,1);
+    // Moves forward pseudorandomly by velocity with noise() function;
+    float vx = speed * (noise(tx) * 2 - 1);
+    float vy = speed * (noise(ty) * 2 - 1);
+    x += vx;
     y += vy;
+    
+    // small time increments for smoother movements
+    tx += 0.01;
+    ty += 0.05;
     
     // Wraps around the window horizontally
     if (x - fishWidth >= width) {
@@ -49,10 +54,10 @@ class PrizeFish {
    
    // Checking if a fish collides with the hook and
     void hooked(Hero hero) {    
-      boolean insideLeft = (x + prizeFishPic.width/2 > hero.x - hero.WIDTH/2);
+      boolean insideLeft = (x + fishWidth / 2 > hero.x - hero.WIDTH/2);
       boolean insideRight = (x < hero.x + hero.WIDTH/2);
-      boolean insideTop = (y + fishHeight/2 > hero.y - hero.HEIGHT/2);
-      boolean insideBottom = (y - fishHeight/2 < hero.y + hero.HEIGHT/2);
+      boolean insideTop = (y + fishHeight / 2 > hero.y - hero.HEIGHT/2);
+      boolean insideBottom = (y - fishHeight / 2 < hero.y + hero.HEIGHT/2);
       
       // if it does, it gets hooked, i.e. its position becomes the same as the position of the hook
       if (insideLeft && insideRight && insideTop && insideBottom) {
@@ -64,7 +69,7 @@ class PrizeFish {
         pushMatrix();     
         translate(x,y);
         rotate(radians(270));
-        image(prizeFishPic, -prizeFishPic.width/1.5, 0);
+        image(nastyFishPic, -nastyFishPic.width/1.5, 0);
         popMatrix();
       }
       // If a fish swims from right to left, its image gets flipped horizontally    
@@ -72,25 +77,23 @@ class PrizeFish {
         pushMatrix();
         translate(x,y);
         scale(-1,1);
-        image(prizeFishPic, 0, 0);
+        image(nastyFishPic, 0, 0);
         popMatrix();
       }
       else {
-        image(prizeFishPic,x,y);
+        image(nastyFishPic,x,y);
       }    
 
       
       // If a fish is hooked and dragged out (if its Y-positio equals or less than 0) the number of fishes caught increases by 1
       // and the array of fishes gets shorter untill all the fish is caught
       if (insideLeft && insideRight && insideTop && insideBottom && y <= stats.statsHeight / 2) {
-        caught = caught + 1;
+        bitten = bitten + 1;
         y = y + height - stats.statsHeight/2;
-        prizeFishes = (PrizeFish[])shorten(prizeFishes);
       }
     }
-    
-    // Returns the number of caught fish for future score
-    int getCaught() {
-      return caught;
+        // Returns the number of caught fish for future score
+    int gotBitten() {
+      return bitten;
     }
 }

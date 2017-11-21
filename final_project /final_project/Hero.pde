@@ -30,10 +30,10 @@ class Hero {
     image(heroImg,x,y);
     // and fishing line
     stroke(0);
-    line (x,0,x,y);
+    line (x,0,x,y - HEIGHT / 2);
     // The hook is constrained within the window
     x = constrain(x, 0 + WIDTH/2, width - WIDTH/2);
-    y = constrain(y, -HEIGHT/2, height - HEIGHT/2);
+    y = constrain(y, -HEIGHT/2 + stats.statsHeight, height - HEIGHT/2);
   }
   
   // The hook is controlled with arrow keys
