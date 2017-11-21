@@ -11,6 +11,8 @@ class PrizeFish {
   float fishWidth = 300;
   int fishHeight = 50;
   
+  boolean collide = false;
+  
   // Constructing a template for fish instances with given parameters
   PrizeFish(PImage tempPrizeFishPic, float tempX, float tempY, float tempVX, float tempVY) {
     x = tempX;
@@ -40,26 +42,50 @@ class PrizeFish {
       vy = -vy;
     }  
   }
-  
-  // Displaying fishes
-  void display() {
-    imageMode(CENTER);
-  }
-   
-   
-   // Checking if a fish collides with the hook and
-    void hooked(Hero hero) {    
+      
+    //Checking if a fish collides with the hook and 
+    boolean collide(Hero hero) {    
       boolean insideLeft = (x + prizeFishPic.width/2 > hero.x - hero.WIDTH/2);
       boolean insideRight = (x < hero.x + hero.WIDTH/2);
       boolean insideTop = (y + fishHeight/2 > hero.y - hero.HEIGHT/2);
       boolean insideBottom = (y - fishHeight/2 < hero.y + hero.HEIGHT/2);
       
-      // if it does, it gets hooked, i.e. its position becomes the same as the position of the hook
+      // and returning the value of the boolean
       if (insideLeft && insideRight && insideTop && insideBottom) {
+        collide = true;
+      }
+      else {
+        collide = false;
+      }
+      return collide;
+    }
+  
+    // if a fish collides with hero, it gets hooked, i.e. its position becomes the same as the position of the hook
+      void hooked() {
+      if (collide == true) {
+        if (stats.countDown <= 0) {
+          return;
+        }
+        else {
         x = hero.x;
-        y = hero.y; 
-        
-        // and the image gets turned upwards
+        y = hero.y;} 
+        //vx = 0;
+      }
+      
+      // When hooked fish is dragged to the surface, the value of caught variable increases by 1 
+      // and the array of the fishes gets shortened by 1
+      if (collide == true && y <= stats.statsHeight / 2) {
+        caught = caught + 1;
+        y = y + height - stats.statsHeight/2;
+        prizeFishes = (PrizeFish[])shorten(prizeFishes);
+      }
+    }  
+  
+  
+  // Displaying fishes
+  // if a fish is hooked it turns upwards when dragged to the surface
+  void display() {
+      if (collide == true) {
         imageMode(CENTER);
         pushMatrix();     
         translate(x,y);
@@ -68,29 +94,58 @@ class PrizeFish {
         popMatrix();
       }
       // If a fish swims from right to left, its image gets flipped horizontally    
-      else if (vx < 0) {  
+      else if (collide == false && vx < 0) {  
         pushMatrix();
         translate(x,y);
         scale(-1,1);
         image(prizeFishPic, 0, 0);
         popMatrix();
       }
+      // Otherwise the image displays normally
       else {
         image(prizeFishPic,x,y);
-      }    
+      } 
+  }
+}   
+   
+    ////Checking if a fish collides with the hook and
+    //void hooked(Hero hero) {    
+    //  boolean insideLeft = (x + prizeFishPic.width/2 > hero.x - hero.WIDTH/2);
+    //  boolean insideRight = (x < hero.x + hero.WIDTH/2);
+    //  boolean insideTop = (y + fishHeight/2 > hero.y - hero.HEIGHT/2);
+    //  boolean insideBottom = (y - fishHeight/2 < hero.y + hero.HEIGHT/2);
+      
+    //  // if it does, it gets hooked, i.e. its position becomes the same as the position of the hook
+    //  if (insideLeft && insideRight && insideTop && insideBottom) {
+    //    x = hero.x;
+    //    y = hero.y; 
+        
+    //    // and the image gets turned upwards
+    //    imageMode(CENTER);
+    //    pushMatrix();     
+    //    translate(x,y);
+    //    rotate(radians(270));
+    //    image(prizeFishPic, -prizeFishPic.width/1.5, 0);
+    //    popMatrix();
+    //  }
+    //  // If a fish swims from right to left, its image gets flipped horizontally    
+    //  else if (vx < 0) {  
+    //    pushMatrix();
+    //    translate(x,y);
+    //    scale(-1,1);
+    //    image(prizeFishPic, 0, 0);
+    //    popMatrix();
+    //  }
+    //  else {
+    //    image(prizeFishPic,x,y);
+    //  }    
 
       
-      // If a fish is hooked and dragged out (if its Y-positio equals or less than 0) the number of fishes caught increases by 1
-      // and the array of fishes gets shorter untill all the fish is caught
-      if (insideLeft && insideRight && insideTop && insideBottom && y <= stats.statsHeight / 2) {
-        caught = caught + 1;
-        y = y + height - stats.statsHeight/2;
-        prizeFishes = (PrizeFish[])shorten(prizeFishes);
-      }
-    }
-    
-    // Returns the number of caught fish for future score
-    int getCaught() {
-      return caught;
-    }
-}
+      //// If a fish is hooked and dragged out (if its Y-positio equals or less than 0) the number of fishes caught increases by 1
+      //// and the array of fishes gets shorter untill all the fish is caught
+      //if (insideLeft && insideRight && insideTop && insideBottom && y <= stats.statsHeight / 2) {
+      //  caught = caught + 1;
+      //  y = y + height - stats.statsHeight/2;
+      //  prizeFishes = (PrizeFish[])shorten(prizeFishes);
+      //}
+    //}

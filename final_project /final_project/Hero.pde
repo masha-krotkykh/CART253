@@ -20,6 +20,12 @@ class Hero {
  
   // Moves by velocity
   void update() {
+    if (stats.fishLeft <= 0 || stats.countDown <= 0) {
+      speed = 0;
+    }
+    else {
+      speed = 1; 
+    }
     x += vx;
     y += vy;
   }

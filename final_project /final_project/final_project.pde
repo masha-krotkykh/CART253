@@ -1,4 +1,5 @@
 // Simple fishing game, where the good fish is to be caught with a hook, and the bad fish is to be avoided
+// The game is against the time and all 10 good fishes need to be caught within 1 minute
 
 // We'll be using one object from the Hero class
 Hero hero;
@@ -15,6 +16,7 @@ PImage nastyFishPic;
 // and for the hero
 PImage heroImg;
 
+// Inset value so that fish doesn't get lost outside the window
 int inset = 10;
 
 // Variable to store the information about the number of fishes caught
@@ -22,6 +24,7 @@ int caught;
 
 // Variable to store the information about the bites from a nasty fish
 int bitten;
+
 
 void setup() {
   size(1200, 800);
@@ -68,8 +71,10 @@ void draw() {
   // Check if any was hooked 
   for (int i = 0; i < prizeFishes.length; i++) {
     prizeFishes[i].update();
+    prizeFishes[i].collide(hero);
     prizeFishes[i].display();
-    prizeFishes[i].hooked(hero);
+    prizeFishes[i].hooked();
+
   }
   
   for (int i = 0; i < nastyFishes.length; i++) {
@@ -80,6 +85,6 @@ void draw() {
   
   // Update and display stats
   stats.update();
+  stats.checkQuantity();
   stats.display();
-
 }
