@@ -9,7 +9,7 @@ class Hero {
   PImage heroImg;
   int WIDTH = 24;
   int HEIGHT = 87;
-  int speed = 1;
+  int speed;
 
   // Constructing a template for hero
   Hero(PImage tempHeroImg, int tempX, int tempY) {
@@ -24,7 +24,7 @@ class Hero {
       speed = 0;
     }
     else {
-      speed = 1; 
+      speed = 2; 
     }
     x += vx;
     y += vy;

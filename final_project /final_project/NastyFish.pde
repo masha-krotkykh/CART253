@@ -47,20 +47,7 @@ class NastyFish {
     }  
     else if (y + fishHeight/2 <= 0) {
       y = y + height;
-    }
-    
-      
-  Bubble[] bubbles = new Bubble[100];
-          // Create bubbles
-    for (int b = 0; b < bubbles.length; b++) {
-      bubbles[b] = new Bubble(random(0,width), height, int(random(5,150)), random(-3,0),random(-2,2));
-    }
-    if (collide == true) {
-        for (int b = 0; b < bubbles.length; b++) {
-        bubbles[b].update();
-        bubbles[b].display();
-        }
-    }
+    }   
   }
   
   // Displaying fishes

@@ -8,6 +8,7 @@ Stats stats;
 // and an array of objects from the PrizeFish class
 PrizeFish[] prizeFishes = new PrizeFish[10];
 NastyFish[] nastyFishes = new NastyFish[3];
+Bubble[] bubbles = new Bubble[1000];
 
 // An array of images for different nice fishes
 PImage[] prizeFishPics = new PImage[7]; 
@@ -54,6 +55,11 @@ void setup() {
     nastyFishes[n] = new NastyFish(nastyFishPic, floor(random(0, width)), floor(random(inset, height - inset)));
   }
   
+  // Create bubbles
+  for (int b = 0; b < bubbles.length; b++) {
+    bubbles[b] = new Bubble(random(0,width), height, int(random(2,50)), random(-15,2),random(-1,1));
+  }
+  
   
   // Create an instance of hero
   hero = new Hero(heroImg, width/2, 0);
@@ -84,6 +90,16 @@ void draw() {
     nastyFishes[n].display();
     nastyFishes[n].collide(hero);
     nastyFishes[n].hooked();
+  }
+  
+  // Check if nasty fish collides with hero and, if so, bring on the bubbles    
+  for (int b = 0; b < bubbles.length; b++) {
+    for (int n = 0; n < nastyFishes.length; n++) {
+      if (nastyFishes[n].collide(hero) == true) { 
+        bubbles[b].update();
+        bubbles[b].display();
+      }  
+    }
   }
 
   
