@@ -6,7 +6,7 @@ class PrizeFish {
   float y;
   float vx;
   float vy;
-  int speed = floor (random(3,8));
+  //int speed = floor (random(3,8));
   PImage prizeFishPic;
   float fishWidth = 300;
   int fishHeight = 50;
@@ -68,7 +68,8 @@ class PrizeFish {
         }
         else {
         x = hero.x;
-        y = hero.y;} 
+        y = hero.y;
+        } 
         //vx = 0;
       }
       
@@ -107,45 +108,3 @@ class PrizeFish {
       } 
   }
 }   
-   
-    ////Checking if a fish collides with the hook and
-    //void hooked(Hero hero) {    
-    //  boolean insideLeft = (x + prizeFishPic.width/2 > hero.x - hero.WIDTH/2);
-    //  boolean insideRight = (x < hero.x + hero.WIDTH/2);
-    //  boolean insideTop = (y + fishHeight/2 > hero.y - hero.HEIGHT/2);
-    //  boolean insideBottom = (y - fishHeight/2 < hero.y + hero.HEIGHT/2);
-      
-    //  // if it does, it gets hooked, i.e. its position becomes the same as the position of the hook
-    //  if (insideLeft && insideRight && insideTop && insideBottom) {
-    //    x = hero.x;
-    //    y = hero.y; 
-        
-    //    // and the image gets turned upwards
-    //    imageMode(CENTER);
-    //    pushMatrix();     
-    //    translate(x,y);
-    //    rotate(radians(270));
-    //    image(prizeFishPic, -prizeFishPic.width/1.5, 0);
-    //    popMatrix();
-    //  }
-    //  // If a fish swims from right to left, its image gets flipped horizontally    
-    //  else if (vx < 0) {  
-    //    pushMatrix();
-    //    translate(x,y);
-    //    scale(-1,1);
-    //    image(prizeFishPic, 0, 0);
-    //    popMatrix();
-    //  }
-    //  else {
-    //    image(prizeFishPic,x,y);
-    //  }    
-
-      
-      //// If a fish is hooked and dragged out (if its Y-positio equals or less than 0) the number of fishes caught increases by 1
-      //// and the array of fishes gets shorter untill all the fish is caught
-      //if (insideLeft && insideRight && insideTop && insideBottom && y <= stats.statsHeight / 2) {
-      //  caught = caught + 1;
-      //  y = y + height - stats.statsHeight/2;
-      //  prizeFishes = (PrizeFish[])shorten(prizeFishes);
-      //}
-    //}

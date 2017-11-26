@@ -7,10 +7,10 @@ Stats stats;
 
 // and an array of objects from the PrizeFish class
 PrizeFish[] prizeFishes = new PrizeFish[10];
-NastyFish[] nastyFishes = new NastyFish[2];
+NastyFish[] nastyFishes = new NastyFish[3];
 
 // An array of images for different nice fishes
-PImage[] prizeFishPics = new PImage[6]; 
+PImage[] prizeFishPics = new PImage[7]; 
 // an image for evil fishes
 PImage nastyFishPic;
 // and for the hero
@@ -22,8 +22,8 @@ int inset = 10;
 // Variable to store the information about the number of fishes caught
 int caught;
 
-// Variable to store the information about the bites from a nasty fish
-int bitten;
+//// Variable to store the information about the bites from a nasty fish
+//int bitten;
 
 
 void setup() {
@@ -36,6 +36,7 @@ void setup() {
   prizeFishPics[3] = loadImage("img/fish04.png");
   prizeFishPics[4] = loadImage("img/fish05.png");
   prizeFishPics[5] = loadImage("img/fish06.png");
+  prizeFishPics[6] = loadImage("img/fish07.png");
   
   // evil fish image
   nastyFishPic = loadImage("img/nasty_fish.png");
@@ -45,13 +46,14 @@ void setup() {
 
   // Create 10 (array length) instances of prizeFish objects
   for (int i = 0; i < prizeFishes.length; i++) {
-    prizeFishes[i] = new PrizeFish(prizeFishPics[floor(random(0,6))], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1));
+    prizeFishes[i] = new PrizeFish(prizeFishPics[floor(random(0,7))], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1));
   }
   
   // Create 2 instances of nastyFish objects
-  for (int i = 0; i < nastyFishes.length; i++) {
-    nastyFishes[i] = new NastyFish(nastyFishPic, random(0, width), random(inset, height - inset));
+  for (int n = 0; n < nastyFishes.length; n++) {
+    nastyFishes[n] = new NastyFish(nastyFishPic, floor(random(0, width)), floor(random(inset, height - inset)));
   }
+  
   
   // Create an instance of hero
   hero = new Hero(heroImg, width/2, 0);
@@ -77,11 +79,13 @@ void draw() {
 
   }
   
-  for (int i = 0; i < nastyFishes.length; i++) {
-    nastyFishes[i].update();
-    nastyFishes[i].display();
-    nastyFishes[i].hooked(hero);
+  for (int n = 0; n < nastyFishes.length; n++) {
+    nastyFishes[n].update();
+    nastyFishes[n].display();
+    nastyFishes[n].collide(hero);
+    nastyFishes[n].hooked();
   }
+
   
   // Update and display stats
   stats.update();

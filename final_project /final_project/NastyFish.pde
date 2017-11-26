@@ -2,19 +2,20 @@
 // Declaring basic parameters: position, velocity, speed, size...
 
 class NastyFish {
-  float x;
-  float y;
+  int x;
+  int y;
   float vx;
   float vy;
   int speed = floor (random(1,8));
   PImage nastyFishPic;
-  float fishWidth = 100;
+  int fishWidth = 100;
   int fishHeight = 50;
   float tx = random(10,100);
   float ty = random(10,100);
+  boolean collide = false;
   
   // Constructing a template for fish instances with given parameters
-  NastyFish(PImage tempNastyFishPic, float tempX, float tempY) {
+  NastyFish(PImage tempNastyFishPic, int tempX, int tempY) {
     x = tempX;
     y = tempY;
     nastyFishPic = tempNastyFishPic;
@@ -40,60 +41,63 @@ class NastyFish {
       x = x + width + fishWidth;
     }
     
-    // "Bounces off" vertically
-    else if (y - fishHeight/2 >= height || y + fishHeight/2 <= 0) {
-      vy = -vy;
+    // and vertically
+    else if (y - fishHeight/2 >= height) {
+      y = y - height;
     }  
+    else if (y + fishHeight/2 <= 0) {
+      y = y + height;
+    }
+    
+      
+  Bubble[] bubbles = new Bubble[100];
+          // Create bubbles
+    for (int b = 0; b < bubbles.length; b++) {
+      bubbles[b] = new Bubble(random(0,width), height, int(random(5,150)), random(-3,0),random(-2,2));
+    }
+    if (collide == true) {
+        for (int b = 0; b < bubbles.length; b++) {
+        bubbles[b].update();
+        bubbles[b].display();
+        }
+    }
   }
   
   // Displaying fishes
   void display() {
     imageMode(CENTER);
+    image(nastyFishPic,x,y + fishHeight); 
   }
    
    
    // Checking if a fish collides with the hook and
-    void hooked(Hero hero) {    
+    boolean collide (Hero hero) {    
       boolean insideLeft = (x + fishWidth / 2 > hero.x - hero.WIDTH/2);
       boolean insideRight = (x < hero.x + hero.WIDTH/2);
       boolean insideTop = (y + fishHeight / 2 > hero.y - hero.HEIGHT/2);
       boolean insideBottom = (y - fishHeight / 2 < hero.y + hero.HEIGHT/2);
-      
-      // if it does, it gets hooked, i.e. its position becomes the same as the position of the hook
+            
+     // and returning the value of the boolean
       if (insideLeft && insideRight && insideTop && insideBottom) {
-        x = hero.x;
-        y = hero.y; 
-        
-        // and the image gets turned upwards
-        imageMode(CENTER);
-        pushMatrix();     
-        translate(x,y);
-        rotate(radians(270));
-        image(nastyFishPic, -nastyFishPic.width/1.5, 0);
-        popMatrix();
-      }
-      // If a fish swims from right to left, its image gets flipped horizontally    
-      else if (vx < 0) {  
-        pushMatrix();
-        translate(x,y);
-        scale(-1,1);
-        image(nastyFishPic, 0, 0);
-        popMatrix();
+        collide = true;
       }
       else {
-        image(nastyFishPic,x,y);
-      }    
-
+        collide = false;
+      }
+      return collide;
+    }
+           
+    void hooked() { 
+      // if it does, it gets hooked, i.e. its position becomes the same as the position of the hook
+      if (collide == true) {
+        x = hero.x;
+        y = hero.y; 
+      }
+       
       
-      // If a fish is hooked and dragged out (if its Y-positio equals or less than 0) the number of fishes caught increases by 1
-      // and the array of fishes gets shorter untill all the fish is caught
-      if (insideLeft && insideRight && insideTop && insideBottom && y <= stats.statsHeight / 2) {
-        bitten = bitten + 1;
+      if (collide == true && y <= stats.statsHeight / 2) {
         y = y + height - stats.statsHeight/2;
       }
-    }
-        // Returns the number of caught fish for future score
-    int gotBitten() {
-      return bitten;
-    }
+      
+    }  
 }

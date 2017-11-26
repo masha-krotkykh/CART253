@@ -2,8 +2,8 @@
 // Declaring basic variables (position, size, velocity and speed)
 
 class Hero {
-  float x;
-  float y;
+  int x;
+  int y;
   float vx;
   float vy;
   PImage heroImg;
@@ -12,7 +12,7 @@ class Hero {
   int speed = 1;
 
   // Constructing a template for hero
-  Hero(PImage tempHeroImg, float tempX, float tempY) {
+  Hero(PImage tempHeroImg, int tempX, int tempY) {
     x = tempX;
     y = tempY;
     heroImg = tempHeroImg;
