@@ -73,7 +73,12 @@ class PrizeFish {
       // When the fish is dragged to the surface it disappears from the array list
       if (collide == true && y <= stats.statsHeight / 2) {
         prizeFishes.remove(this);
+        // Number of fishes caught increases by 1
         caught = caught + 1;
+        
+        // Splash plays and rewinds to be ready to be played again
+        caughtSound.play();
+        caughtSound.rewind();
       }
     }
 

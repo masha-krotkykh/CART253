@@ -20,7 +20,6 @@ class Bubble {
   void update() {
     x += vx;
     y += vy;
-    
     if (y < 0) {
       y = y + height;
     }

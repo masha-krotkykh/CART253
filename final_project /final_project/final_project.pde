@@ -1,8 +1,20 @@
+
 // Simple fishing game, where the good fish is to be caught with a hook, and the bad fish is to be avoided
 // The game is against the time and all 10 good fishes need to be caught within 1 minute
 
+// import Minim library for sound
+import ddf.minim.*;
+Minim minim;
+// Declare some audio 
+AudioPlayer[] tones;
+AudioPlayer backgroundSound;
+AudioPlayer hookedSound;
+AudioPlayer caughtSound;
+AudioPlayer penaltySound;
+
 // We'll be using one object from the Hero class
 Hero hero;
+// And an instance of stats
 Stats stats;
 
 // and an array of objects from the PrizeFish class
@@ -30,6 +42,13 @@ int caught;
 
 void setup() {
   size(1200, 800);
+  
+  minim = new Minim(this);
+  //Load all sound files
+  backgroundSound = minim.loadFile("sound/theme.wav");
+  caughtSound = minim.loadFile("sound/caught.wav");
+  penaltySound = minim.loadFile("sound/penalty.wav");
+
   
   // Load good fish images
   prizeFishPics[0] = loadImage("img/fish01.png");
@@ -83,6 +102,9 @@ void setup() {
 void draw() {
   background(backgroundImage);
   
+  // Play background sound
+  backgroundSound.play();
+  
   // Update and display hero
   hero.update();
   hero.display();
@@ -110,6 +132,9 @@ void draw() {
   for (int b = 0; b < bubbles.length; b++) {
     for (int n = 0; n < nastyFishes.length; n++) {
       if (nastyFishes[n].collide(hero) == true) { 
+        
+        // Has to play sound when a nasty fish is hooked....
+        penaltySound.loop();
         bubbles[b].update();
         bubbles[b].display();
       }  
