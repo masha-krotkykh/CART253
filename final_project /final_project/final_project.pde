@@ -6,17 +6,18 @@ Hero hero;
 Stats stats;
 
 // and an array of objects from the PrizeFish class
-PrizeFish[] prizeFishes = new PrizeFish[10];
+ArrayList prizeFishes = new ArrayList();
 NastyFish[] nastyFishes = new NastyFish[3];
 Bubble[] bubbles = new Bubble[1000];
 
 // An array of images for different nice fishes
-PImage[] prizeFishPics = new PImage[7]; 
+PImage[] prizeFishPics = new PImage[10]; 
 // an image for evil fishes
 PImage nastyFishPic;
 // and for the hero
 PImage heroImg;
-
+// and for the background
+PImage backgroundImage;
 // Inset value so that fish doesn't get lost outside the window
 int inset = 10;
 
@@ -38,18 +39,31 @@ void setup() {
   prizeFishPics[4] = loadImage("img/fish05.png");
   prizeFishPics[5] = loadImage("img/fish06.png");
   prizeFishPics[6] = loadImage("img/fish07.png");
+  prizeFishPics[7] = loadImage("img/fish08.png");
+  prizeFishPics[8] = loadImage("img/fish09.png");
+  prizeFishPics[9] = loadImage("img/fish10.png");
   
   // evil fish image
   nastyFishPic = loadImage("img/nasty_fish.png");
   
   // and hero image
   heroImg = loadImage("img/hook.png");
-
-  // Create 10 (array length) instances of prizeFish objects
-  for (int i = 0; i < prizeFishes.length; i++) {
-    prizeFishes[i] = new PrizeFish(prizeFishPics[floor(random(0,7))], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1));
-  }
   
+  // and background
+  backgroundImage = loadImage("img/bg.jpg");
+
+  // Create 10  instances of prizeFish objects
+  prizeFishes.add(new PrizeFish(prizeFishPics[0], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+  prizeFishes.add(new PrizeFish(prizeFishPics[1], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+  prizeFishes.add(new PrizeFish(prizeFishPics[2], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+  prizeFishes.add(new PrizeFish(prizeFishPics[3], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+  prizeFishes.add(new PrizeFish(prizeFishPics[4], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+  prizeFishes.add(new PrizeFish(prizeFishPics[5], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+  prizeFishes.add(new PrizeFish(prizeFishPics[6], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+  prizeFishes.add(new PrizeFish(prizeFishPics[7], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+  prizeFishes.add(new PrizeFish(prizeFishPics[8], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+  prizeFishes.add(new PrizeFish(prizeFishPics[9], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+
   // Create 2 instances of nastyFish objects
   for (int n = 0; n < nastyFishes.length; n++) {
     nastyFishes[n] = new NastyFish(nastyFishPic, floor(random(0, width)), floor(random(inset, height - inset)));
@@ -57,7 +71,7 @@ void setup() {
   
   // Create bubbles
   for (int b = 0; b < bubbles.length; b++) {
-    bubbles[b] = new Bubble(random(0,width), height, int(random(2,50)), random(-15,2),random(-1,1));
+    bubbles[b] = new Bubble(random(0,width), height, int(random(2,80)), random(-15,2),random(-3,3));
   }
   
   
@@ -67,7 +81,7 @@ void setup() {
 }
 
 void draw() {
-  background(211,247,244);
+  background(backgroundImage);
   
   // Update and display hero
   hero.update();
@@ -77,14 +91,14 @@ void draw() {
   
   // Looping throught the array of prizeFishes, update and display them.
   // Check if any was hooked 
-  for (int i = 0; i < prizeFishes.length; i++) {
-    prizeFishes[i].update();
-    prizeFishes[i].collide(hero);
-    prizeFishes[i].display();
-    prizeFishes[i].hooked();
-
+  for (int i = 0; i < prizeFishes.size(); i++) {
+    PrizeFish prizeFish = (PrizeFish)prizeFishes.get(i);
+    prizeFish.update();
+    prizeFish.collide(hero);
+    prizeFish.display();
+    prizeFish.hooked();
   }
-  
+
   for (int n = 0; n < nastyFishes.length; n++) {
     nastyFishes[n].update();
     nastyFishes[n].display();

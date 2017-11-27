@@ -6,11 +6,9 @@ class PrizeFish {
   float y;
   float vx;
   float vy;
-  //int speed = floor (random(3,8));
   PImage prizeFishPic;
   float fishWidth = 300;
   int fishHeight = 50;
-  
   boolean collide = false;
   
   // Constructing a template for fish instances with given parameters
@@ -45,7 +43,7 @@ class PrizeFish {
       
     //Checking if a fish collides with the hook and 
     boolean collide(Hero hero) {    
-      boolean insideLeft = (x + prizeFishPic.width/2 > hero.x - hero.WIDTH/2);
+      boolean insideLeft = (x + fishWidth/2 > hero.x - hero.WIDTH/2);
       boolean insideRight = (x < hero.x + hero.WIDTH/2);
       boolean insideTop = (y + fishHeight/2 > hero.y - hero.HEIGHT/2);
       boolean insideBottom = (y - fishHeight/2 < hero.y + hero.HEIGHT/2);
@@ -61,27 +59,24 @@ class PrizeFish {
     }
   
     // if a fish collides with hero, it gets hooked, i.e. its position becomes the same as the position of the hook
-      void hooked() {
+    void hooked() {
       if (collide == true) {
         if (stats.countDown <= 0) {
           return;
         }
         else {
-        x = hero.x;
-        y = hero.y;
+          x = hero.x;
+          y = hero.y;
         } 
-        //vx = 0;
       }
       
-      // When hooked fish is dragged to the surface, the value of caught variable increases by 1 
-      // and the array of the fishes gets shortened by 1
+      // When the fish is dragged to the surface it disappears from the array list
       if (collide == true && y <= stats.statsHeight / 2) {
+        prizeFishes.remove(this);
         caught = caught + 1;
-        y = y + height - stats.statsHeight/2;
-        prizeFishes = (PrizeFish[])shorten(prizeFishes);
       }
-    }  
-  
+    }
+
   
   // Displaying fishes
   // if a fish is hooked it turns upwards when dragged to the surface
@@ -102,7 +97,7 @@ class PrizeFish {
         image(prizeFishPic, 0, 0);
         popMatrix();
       }
-      // Otherwise the image displays normally
+      // Otherwise the display default image 
       else {
         image(prizeFishPic,x,y);
       } 
