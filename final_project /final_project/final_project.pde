@@ -134,7 +134,6 @@ void draw() {
       if (nastyFishes[n].collide(hero) == true) { 
         
         // Has to play sound when a nasty fish is hooked....
-        penaltySound.loop();
         bubbles[b].update();
         bubbles[b].display();
       }  

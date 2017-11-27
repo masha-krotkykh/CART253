@@ -79,11 +79,14 @@ class NastyFish {
       if (collide == true) {
         x = hero.x;
         y = hero.y; 
+        penaltySound.play();
       }
        
       
       if (collide == true && y <= stats.statsHeight / 2) {
         y = y + height - stats.statsHeight/2;
+        penaltySound.pause();
+        penaltySound.rewind();
       }
       
     }  
