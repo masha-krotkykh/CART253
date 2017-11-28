@@ -27,9 +27,9 @@ class Bubble {
   
   // Displaying bubbles
   void display() {
-        ellipseMode(CENTER);
-        stroke(255);
-        fill(255,255,255,100);
-        ellipse(x,y,size,size);
+    ellipseMode(CENTER);
+    stroke(255);
+    fill(255,255,255,100);
+    ellipse(x,y,size,size);
   }
 }

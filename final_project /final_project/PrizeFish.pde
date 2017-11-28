@@ -49,7 +49,7 @@ class PrizeFish {
       boolean insideBottom = (y - fishHeight/2 < hero.y + hero.HEIGHT/2);
             
       // and returning the value of the boolean
-      if (insideLeft && insideRight && insideTop && insideBottom && !hero.onHook) {
+      if (insideLeft && insideRight && insideTop && insideBottom && !hero.onHook && stats.countDown > 0) {
         collide = true;
         hero.onHook = true;
       }
@@ -74,6 +74,8 @@ class PrizeFish {
       // When the fish is dragged to the surface it disappears from the array list
       if (collide == true && y <= stats.statsHeight / 2) {
         prizeFishes.remove(this);
+        
+        // sets the value of something being on the hook to false
         hero.onHook = false;
         // Number of fishes caught increases by 1
         caught = caught + 1;

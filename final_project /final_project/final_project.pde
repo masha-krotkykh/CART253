@@ -17,7 +17,7 @@ Hero hero;
 // And an instance of stats
 Stats stats;
 
-// and an array of objects from the PrizeFish class
+// and an array list of objects from the PrizeFish class
 ArrayList prizeFishes = new ArrayList();
 NastyFish[] nastyFishes = new NastyFish[3];
 Bubble[] bubbles = new Bubble[1000];
@@ -35,10 +35,7 @@ int inset = 10;
 
 // Variable to store the information about the number of fishes caught
 int caught;
-
-//// Variable to store the information about the bites from a nasty fish
-//int bitten;
-
+int gameScreen = 0;
 
 void setup() {
   size(1200, 800);
@@ -67,7 +64,7 @@ void setup() {
   // evil fish image
   nastyFishPic = loadImage("img/nasty_fish.png");
   
-  // and hero image
+  // hero image
   heroImg = loadImage("img/hook.png");
   
   // and background
@@ -102,8 +99,53 @@ void setup() {
 }
 
 void draw() {
-  background(backgroundImage);
+  // Display the current screen according to the game stage
+  // startScreen displays before the game begins and until the mouse is clicked
+  if(gameScreen == 0) {
+    startScreen(); 
+  }
+
+  // endScreen displays when the game ends until the mouse is clicked
+  else if(gameScreen == 2) {
+    endScreen();
+  }
   
+  // gameScreen is the stage where the game executes
+  else {
+    gameScreen();
+  }
+}
+
+
+
+// Functions to display an appropriate screen
+// startScreen before the game begins
+void startScreen() {
+  background(0);
+  textAlign(CENTER);
+  text("CLICK ANYWHERE TO START", width/2, height/2);
+}
+
+// EndScreen when the game ends. 
+void endScreen() {
+    background(0);
+    textAlign(CENTER);
+    text("EVERYONE'S A LOSER", width/2, height/2);
+  }
+
+// All game code is now inside gameScreen() function so it only gets called when the mouse is clicked from
+// the startScreen or the endScreen
+void gameScreen() {
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  background(backgroundImage);
   
   // Update and display hero
   hero.update();
@@ -145,4 +187,11 @@ void draw() {
   stats.update();
   stats.checkQuantity();
   stats.display();
+}
+
+// When mouse is pressed the new game starts.
+void mousePressed() {
+  if(gameScreen == 0 || gameScreen == 2)  {
+    gameScreen = 1;
+  }
 }

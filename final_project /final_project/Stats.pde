@@ -47,6 +47,7 @@ class Stats {
     // When the time runs out the player loses
     if (countDown <= 0) {
       timerRunning = false;
+      hero.onHook = false;
       textAlign(CENTER);
       fill(255,0,0);
       text("YOU LOOSE", width/2, height/2); 
@@ -64,6 +65,7 @@ class Stats {
         rect(x, y, statsWidth, statsHeight);
         fill(25,25,25);
         textSize(25);
+        textAlign(LEFT);
         text("You need " + fishLeft + " more" + units, 30, statsHeight / 1.5 );
         text("Time left: " + countDown, width/6 * 5, statsHeight / 1.5);
      }  

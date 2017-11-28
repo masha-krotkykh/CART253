@@ -10,7 +10,7 @@ class Hero {
   int WIDTH = 24;
   int HEIGHT = 87;
   int speed;
-  
+  // boolean to check if there is already something on the hook
   boolean onHook = false;
 
   // Constructing a template for hero
