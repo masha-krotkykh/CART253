@@ -48,7 +48,9 @@ void setup() {
   backgroundSound = minim.loadFile("sound/theme.wav");
   caughtSound = minim.loadFile("sound/caught.wav");
   penaltySound = minim.loadFile("sound/penalty.wav");
-
+  
+  // Play background sound
+  backgroundSound.loop();
   
   // Load good fish images
   prizeFishPics[0] = loadImage("img/fish01.png");
@@ -102,8 +104,6 @@ void setup() {
 void draw() {
   background(backgroundImage);
   
-  // Play background sound
-  backgroundSound.play();
   
   // Update and display hero
   hero.update();
@@ -116,7 +116,7 @@ void draw() {
   for (int i = 0; i < prizeFishes.size(); i++) {
     PrizeFish prizeFish = (PrizeFish)prizeFishes.get(i);
     prizeFish.update();
-    prizeFish.collide(hero);
+    if (!hero.onHook) prizeFish.collide(hero);
     prizeFish.display();
     prizeFish.hooked();
   }

@@ -9,6 +9,7 @@ class Stats {
   int fishToCatch = 10;
   int fishLeft;
   String units;
+  boolean timerRunning = true;
 
  
   // Check if there is more than 1 fish left to catch to display units properly in singular or plural
@@ -31,10 +32,13 @@ class Stats {
  // Displaying how many fishes need to be caught 
   void update() {
     fishLeft = fishToCatch - caught;
-    timeElapsed = (millis() - startTime) / 1000;
-    countDown = 60 - timeElapsed;
+      
+    if (timerRunning) {
+      timeElapsed = (millis() - startTime) / 1000;
+      countDown = 60 - timeElapsed;
+    }
   }
- 
+  
   // Display the stats
   void display() {
     rectMode(CORNER);
@@ -42,6 +46,7 @@ class Stats {
 
     // When the time runs out the player loses
     if (countDown <= 0) {
+      timerRunning = false;
       textAlign(CENTER);
       fill(255,0,0);
       text("YOU LOOSE", width/2, height/2); 
@@ -49,6 +54,7 @@ class Stats {
      
      // Whan all the fish is caught the player wins
      else if (fishLeft <= 0) {
+       timerRunning = false;
        textAlign(CENTER);
        fill(255,0,0);
        text("YOU WON", width/2, height/2); 
@@ -56,7 +62,6 @@ class Stats {
      else {
         fill(255,255,255,150);
         rect(x, y, statsWidth, statsHeight);
-        
         fill(25,25,25);
         textSize(25);
         text("You need " + fishLeft + " more" + units, 30, statsHeight / 1.5 );

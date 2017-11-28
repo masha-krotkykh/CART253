@@ -10,6 +10,8 @@ class Hero {
   int WIDTH = 24;
   int HEIGHT = 87;
   int speed;
+  
+  boolean onHook = false;
 
   // Constructing a template for hero
   Hero(PImage tempHeroImg, int tempX, int tempY) {
