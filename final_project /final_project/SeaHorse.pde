@@ -7,7 +7,7 @@ class SeaHorse {
   float vx;
   float vy;
   float speed = random(0,8);
-  int horseWidth = 40;
+  int horseWidth = 60;
   int horseHeight = 100;
   float tx = random(10,100);
   float ty = random(10,100);

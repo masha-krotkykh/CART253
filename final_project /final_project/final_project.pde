@@ -4,7 +4,10 @@
 
 // import Minim library for sound
 import ddf.minim.*;
+
 Minim minim;
+AudioInput mic;
+
 // Declare some audio 
 AudioPlayer[] tones;
 AudioPlayer backgroundSound;
@@ -41,19 +44,27 @@ int inset = 10;
 // Variable to store the information about the number of fishes caught
 int caught;
 boolean horseAttack = false;
+
+// Variable to define the stage of the game 
 int gameState = 0;
 
+
+
+
+int sampleRate = 1024;
 void setup() {
   size(1200, 800);
   
   minim = new Minim(this);
+  mic = minim.getLineIn();
   //Load all sound files
-  backgroundSound = minim.loadFile("sound/theme.wav");
+  backgroundSound = minim.loadFile("sound/theme.wav", sampleRate);
   caughtSound = minim.loadFile("sound/caught.wav");
   penaltySound = minim.loadFile("sound/penalty.wav");
   
   // Play background sound
   backgroundSound.loop();
+  backgroundSound.sampleRate();
   
   // Load good fish images
   prizeFishPics[0] = loadImage("img/fish01.png");

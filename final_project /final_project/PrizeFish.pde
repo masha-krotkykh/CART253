@@ -10,7 +10,14 @@ class PrizeFish {
   float fishWidth = 300;
   int fishHeight = 50;
   boolean collide = false;
+  float level;
   
+  boolean timerRunning = false;
+  int startTime = 0;
+  int timeElapsed;
+  int fishScared = 10;
+
+    
   // Constructing a template for fish instances with given parameters
   PrizeFish(PImage tempPrizeFishPic, float tempX, float tempY, float tempVX, float tempVY) {
     x = tempX;
@@ -22,12 +29,40 @@ class PrizeFish {
   
 
   void update() {
+
+    
+
+    // Check if it's too noisy
+    level = mic.mix.level();
+    // and if it is, the timer gets triggered
+    if (level >= 0.05) {
+      timerRunning = true;
+    }
+    
+    // When the countdown reaches 0, it stops and gets reset
+    if (fishScared <= 0) {
+      timerRunning = false;
+      fishScared = 10;
+      startTime = millis();
+    }
+    
+   // Timer 
+   if (timerRunning) {
+      timeElapsed = (millis() - startTime) / 1000;
+      fishScared = 10 - timeElapsed;
+      // And fish starts swimming 5 times faster for 10 seconds
+      x += vx * 5;
+    }
+    
+    
+    else {
     // Changes X-velocity randomly within small limits to give more organic movement
     // Moves forward by velocity
-    x += vx * random(0.1,1);
-    y += vy;
+      x += vx * random(0.2,1);
+      y += vy;
+    }
     
-    // Wraps around the window horizontally
+    // Fish wraps around the window horizontally
     if (x - fishWidth >= width) {
       x = x - width - fishWidth;
     }
@@ -71,7 +106,8 @@ class PrizeFish {
         // If the hook gets attacked by the sea horse fish gets unhooked
         else if (horseAttack) {
           collide = false;
-          x = x - 50;
+          x = 0;
+          y = y + 50;
           hero.onHook = false;
           vx = -vx;
           vy = -vy;
@@ -121,5 +157,6 @@ class PrizeFish {
       else {
         image(prizeFishPic,x,y);
       } 
-  }
+  println(fishScared);  
+}
 }   
