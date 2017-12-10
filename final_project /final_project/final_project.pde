@@ -8,7 +8,6 @@ Minim minim;
 // Declare some audio 
 AudioPlayer[] tones;
 AudioPlayer backgroundSound;
-AudioPlayer hookedSound;
 AudioPlayer caughtSound;
 AudioPlayer penaltySound;
 
@@ -19,23 +18,30 @@ Stats stats;
 
 // and an array list of objects from the PrizeFish class
 ArrayList prizeFishes = new ArrayList();
+
+// arrays for objects from NastyFish, Bubbles and SeaHorse classes
 NastyFish[] nastyFishes = new NastyFish[3];
 Bubble[] bubbles = new Bubble[1000];
+SeaHorse[] seaHorses = new SeaHorse[1];
 
 // An array of images for different nice fishes
 PImage[] prizeFishPics = new PImage[10]; 
 // an image for evil fishes
 PImage nastyFishPic;
+// for sea horse
+PImage seaHorsePic;
 // and for the hero
 PImage heroImg;
-// and for the background
+// and for the backgrounds
 PImage backgroundImage;
+PImage startImage;
 // Inset value so that fish doesn't get lost outside the window
 int inset = 10;
 
 // Variable to store the information about the number of fishes caught
 int caught;
-int gameScreen = 0;
+boolean horseAttack = false;
+int gameState = 0;
 
 void setup() {
   size(1200, 800);
@@ -64,11 +70,15 @@ void setup() {
   // evil fish image
   nastyFishPic = loadImage("img/nasty_fish.png");
   
+  // sea horse image
+  seaHorsePic = loadImage("img/seahorse.png");
+  
   // hero image
   heroImg = loadImage("img/hook.png");
   
-  // and background
+  // and backgrounds
   backgroundImage = loadImage("img/bg.jpg");
+  startImage = loadImage("img/start.jpg");
 
   // Create 10  instances of prizeFish objects
   prizeFishes.add(new PrizeFish(prizeFishPics[0], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
@@ -82,9 +92,14 @@ void setup() {
   prizeFishes.add(new PrizeFish(prizeFishPics[8], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
   prizeFishes.add(new PrizeFish(prizeFishPics[9], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
 
-  // Create 2 instances of nastyFish objects
+  // Create 3 instances of nastyFish objects
   for (int n = 0; n < nastyFishes.length; n++) {
     nastyFishes[n] = new NastyFish(nastyFishPic, floor(random(0, width)), floor(random(inset, height - inset)));
+  }
+  
+  // Create some sea horses
+  for (int h = 0; h < seaHorses.length; h++) {
+    seaHorses[h] = new SeaHorse(seaHorsePic, floor(random(0, width)), floor(random(0, height)));
   }
   
   // Create bubbles
@@ -101,50 +116,26 @@ void setup() {
 void draw() {
   // Display the current screen according to the game stage
   // startScreen displays before the game begins and until the mouse is clicked
-  if(gameScreen == 0) {
-    startScreen(); 
+  if(gameState == 0) {
+    stats.startScreen();
   }
 
   // endScreen displays when the game ends until the mouse is clicked
-  else if(gameScreen == 2) {
-    endScreen();
+  else if(gameState == 2) {
+    stats.endScreen();
   }
   
   // gameScreen is the stage where the game executes
   else {
     gameScreen();
+    stats.timerRunning = true;
   }
 }
-
-
-
-// Functions to display an appropriate screen
-// startScreen before the game begins
-void startScreen() {
-  background(0);
-  textAlign(CENTER);
-  text("CLICK ANYWHERE TO START", width/2, height/2);
-}
-
-// EndScreen when the game ends. 
-void endScreen() {
-    background(0);
-    textAlign(CENTER);
-    text("EVERYONE'S A LOSER", width/2, height/2);
-  }
 
 // All game code is now inside gameScreen() function so it only gets called when the mouse is clicked from
 // the startScreen or the endScreen
 void gameScreen() {
-  
-  
-  
-  
-  
-  
-  
-  
-  
+    
   background(backgroundImage);
   
   // Update and display hero
@@ -159,8 +150,9 @@ void gameScreen() {
     PrizeFish prizeFish = (PrizeFish)prizeFishes.get(i);
     prizeFish.update();
     if (!hero.onHook) prizeFish.collide(hero);
-    prizeFish.display();
     prizeFish.hooked();
+    prizeFish.display();
+    
   }
 
   for (int n = 0; n < nastyFishes.length; n++) {
@@ -168,6 +160,12 @@ void gameScreen() {
     nastyFishes[n].display();
     nastyFishes[n].collide(hero);
     nastyFishes[n].hooked();
+  }
+  
+  for (int h = 0; h < seaHorses.length; h++) {
+    seaHorses[h].update();
+    seaHorses[h].collide(hero);  
+    seaHorses[h].display();
   }
   
   // Check if nasty fish collides with hero and, if so, bring on the bubbles    
@@ -189,9 +187,10 @@ void gameScreen() {
   stats.display();
 }
 
-// When mouse is pressed the new game starts.
-void mousePressed() {
-  if(gameScreen == 0 || gameScreen == 2)  {
-    gameScreen = 1;
+// When any key is pressed the new game starts.
+void keyPressed() {
+  if(gameState == 0 || gameState == 2)  {
+    gameState = 1;
+    stats.reset();
   }
 }

@@ -7,7 +7,6 @@ class NastyFish {
   float vx;
   float vy;
   int speed = floor (random(1,8));
-  PImage nastyFishPic;
   int fishWidth = 100;
   int fishHeight = 50;
   float tx = random(10,100);

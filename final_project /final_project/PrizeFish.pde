@@ -43,10 +43,10 @@ class PrizeFish {
       
     //Checking if a fish collides with the hook and 
     boolean collide(Hero hero) {    
-      boolean insideLeft = (x + fishWidth/2 > hero.x - hero.WIDTH/2);
-      boolean insideRight = (x < hero.x + hero.WIDTH/2);
-      boolean insideTop = (y + fishHeight/2 > hero.y - hero.HEIGHT/2);
-      boolean insideBottom = (y - fishHeight/2 < hero.y + hero.HEIGHT/2);
+      boolean insideLeft = (x + fishWidth / 2 > hero.x - hero.WIDTH / 2);
+      boolean insideRight = (x - fishWidth / 2 < hero.x + hero.WIDTH / 2);
+      boolean insideTop = (y + fishHeight / 2 > hero.y - hero.HEIGHT / 2);
+      boolean insideBottom = (y - fishHeight / 2 < hero.y + hero.HEIGHT / 2);
             
       // and returning the value of the boolean
       if (insideLeft && insideRight && insideTop && insideBottom && !hero.onHook && stats.countDown > 0) {
@@ -55,15 +55,26 @@ class PrizeFish {
       }
       else {
         collide = false;
+        hero.onHook = false;
       }
       return collide;
     }
   
     // if a fish collides with hero, it gets hooked, i.e. its position becomes the same as the position of the hook
+    // unless the time is up
     void hooked() {
       if (collide == true) {
         if (stats.countDown <= 0) {
           return;
+        }
+        
+        // If the hook gets attacked by the sea horse fish gets unhooked
+        else if (horseAttack) {
+          collide = false;
+          x = x - 50;
+          hero.onHook = false;
+          vx = -vx;
+          vy = -vy;
         }
         else {
           x = hero.x;
@@ -90,7 +101,7 @@ class PrizeFish {
   // Displaying fishes
   // if a fish is hooked it turns upwards when dragged to the surface
   void display() {
-      if (collide == true) {
+      if (collide == true && !horseAttack) {
         imageMode(CENTER);
         pushMatrix();     
         translate(x,y);

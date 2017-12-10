@@ -11,6 +11,7 @@ class Stats {
   String units;
   boolean timerRunning = true;
 
+
  
   // Check if there is more than 1 fish left to catch to display units properly in singular or plural
   String checkQuantity() {
@@ -22,6 +23,7 @@ class Stats {
     }
     return units;
   }
+  
   
   // Add a timer that counts down from 60 to 0
 
@@ -37,30 +39,17 @@ class Stats {
       timeElapsed = (millis() - startTime) / 1000;
       countDown = 60 - timeElapsed;
     }
+    
+    if(countDown <= 0 || caught >= 10) {
+      gameState = 2;
+      timerRunning = false;
+    }
   }
   
   // Display the stats
   void display() {
     rectMode(CORNER);
     noStroke();
-
-    // When the time runs out the player loses
-    if (countDown <= 0) {
-      timerRunning = false;
-      hero.onHook = false;
-      textAlign(CENTER);
-      fill(255,0,0);
-      text("YOU LOOSE", width/2, height/2); 
-     }
-     
-     // Whan all the fish is caught the player wins
-     else if (fishLeft <= 0) {
-       timerRunning = false;
-       textAlign(CENTER);
-       fill(255,0,0);
-       text("YOU WON", width/2, height/2); 
-     }
-     else {
         fill(255,255,255,150);
         rect(x, y, statsWidth, statsHeight);
         fill(25,25,25);
@@ -68,6 +57,25 @@ class Stats {
         textAlign(LEFT);
         text("You need " + fishLeft + " more" + units, 30, statsHeight / 1.5 );
         text("Time left: " + countDown, width/6 * 5, statsHeight / 1.5);
-     }  
+  }
+  
+  
+  // startScreen before the game begins
+  void startScreen() {
+    background(startImage);
+  }
+
+  // EndScreen when the game ends. 
+  void endScreen() {
+    background(0);
+    textAlign(CENTER);
+    text("EVERYONE'S A LOSER", width/2, height/2);
+  }
+
+  // Resets scores and timer before new game starts
+  void reset() {  
+    countDown = 60;
+    startTime = millis();
+    caught = 0;
   }
 }
