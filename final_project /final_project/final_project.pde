@@ -1,18 +1,21 @@
 
+
+
 // Simple fishing game, where the good fish is to be caught with a hook, and the bad fish is to be avoided
 // The game is against the time and all 10 good fishes need to be caught within 1 minute
 
 // import Minim library for sound
 import ddf.minim.*;
+import ddf.minim.ugens.*;
 
 Minim minim;
 AudioInput mic;
 
 // Declare some audio 
 AudioPlayer[] tones;
-AudioPlayer backgroundSound;
 AudioPlayer caughtSound;
 AudioPlayer penaltySound;
+AudioPlayer backgroundSound;
 
 // We'll be using one object from the Hero class
 Hero hero;
@@ -28,7 +31,7 @@ Bubble[] bubbles = new Bubble[1000];
 SeaHorse[] seaHorses = new SeaHorse[1];
 
 // An array of images for different nice fishes
-PImage[] prizeFishPics = new PImage[10]; 
+PImage[] prizeFishPics = new PImage[12]; 
 // an image for evil fishes
 PImage nastyFishPic;
 // for sea horse
@@ -48,24 +51,24 @@ boolean horseAttack = false;
 // Variable to define the stage of the game 
 int gameState = 0;
 
+boolean newLevel = false;
 
-
-
-int sampleRate = 1024;
 void setup() {
   size(1200, 800);
   
   minim = new Minim(this);
+  
+  // Get the mic
   mic = minim.getLineIn();
+  
   //Load all sound files
-  backgroundSound = minim.loadFile("sound/theme.wav", sampleRate);
   caughtSound = minim.loadFile("sound/caught.wav");
   penaltySound = minim.loadFile("sound/penalty.wav");
-  
+  backgroundSound = minim.loadFile("sound/theme.wav");
   // Play background sound
-  backgroundSound.loop();
-  backgroundSound.sampleRate();
-  
+  //backgroundSound.loop();
+
+
   // Load good fish images
   prizeFishPics[0] = loadImage("img/fish01.png");
   prizeFishPics[1] = loadImage("img/fish02.png");
@@ -77,6 +80,8 @@ void setup() {
   prizeFishPics[7] = loadImage("img/fish08.png");
   prizeFishPics[8] = loadImage("img/fish09.png");
   prizeFishPics[9] = loadImage("img/fish10.png");
+  prizeFishPics[10] = loadImage("img/fish11.png");
+  prizeFishPics[11] = loadImage("img/fish12.png");
   
   // evil fish image
   nastyFishPic = loadImage("img/nasty_fish.png");
@@ -91,7 +96,7 @@ void setup() {
   backgroundImage = loadImage("img/bg.jpg");
   startImage = loadImage("img/start.jpg");
 
-  // Create 10  instances of prizeFish objects
+  // Create 12  instances of prizeFish objects
   prizeFishes.add(new PrizeFish(prizeFishPics[0], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
   prizeFishes.add(new PrizeFish(prizeFishPics[1], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
   prizeFishes.add(new PrizeFish(prizeFishPics[2], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
@@ -102,6 +107,8 @@ void setup() {
   prizeFishes.add(new PrizeFish(prizeFishPics[7], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
   prizeFishes.add(new PrizeFish(prizeFishPics[8], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
   prizeFishes.add(new PrizeFish(prizeFishPics[9], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+  prizeFishes.add(new PrizeFish(prizeFishPics[10], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
+  prizeFishes.add(new PrizeFish(prizeFishPics[11], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
 
   // Create 3 instances of nastyFish objects
   for (int n = 0; n < nastyFishes.length; n++) {
@@ -109,7 +116,7 @@ void setup() {
   }
   
   // Create some sea horses
-  for (int h = 0; h < seaHorses.length; h++) {
+  for (int h = 0; h < 1; h++) {
     seaHorses[h] = new SeaHorse(seaHorsePic, floor(random(0, width)), floor(random(0, height)));
   }
   
@@ -146,9 +153,9 @@ void draw() {
 // All game code is now inside gameScreen() function so it only gets called when the mouse is clicked from
 // the startScreen or the endScreen
 void gameScreen() {
-    
+  // Display background image  
   background(backgroundImage);
-  
+
   // Update and display hero
   hero.update();
   hero.display();
@@ -201,7 +208,9 @@ void gameScreen() {
 // When any key is pressed the new game starts.
 void keyPressed() {
   if(gameState == 0 || gameState == 2)  {
+    if(gameState == 2) {
+      stats.reset();
+    }
     gameState = 1;
-    stats.reset();
   }
 }

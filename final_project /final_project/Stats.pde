@@ -6,16 +6,18 @@ class Stats {
   int statsWidth = width;
   int statsHeight = 70;
   int timeLeft;
-  int fishToCatch = 10;
-  int fishLeft;
+  int fishToCatch = 12;
   String units;
   boolean timerRunning = true;
+  int levelCounter = 1;
+  int fishLeft = fishToCatch - caught;
+  int nextLevel;
+  // Gets updated fromPrizeFish class every time a fish is caught depending on the level
+  int score;
 
-
- 
-  // Check if there is more than 1 fish left to catch to display units properly in singular or plural
+  // Check if there is more than 1 fish caught to display units properly in singular or plural
   String checkQuantity() {
-    if (fishLeft == 1) {
+    if (caught == 1) {
        units = " fish";
     }
     else {
@@ -33,14 +35,13 @@ class Stats {
   
  // Displaying how many fishes need to be caught 
   void update() {
-    fishLeft = fishToCatch - caught;
       
     if (timerRunning) {
       timeElapsed = (millis() - startTime) / 1000;
       countDown = 60 - timeElapsed;
     }
     
-    if(countDown <= 0 || caught >= 10) {
+    if(countDown <= 0) {
       gameState = 2;
       timerRunning = false;
     }
@@ -50,13 +51,15 @@ class Stats {
   void display() {
     rectMode(CORNER);
     noStroke();
-        fill(255,255,255,150);
-        rect(x, y, statsWidth, statsHeight);
-        fill(25,25,25);
-        textSize(25);
-        textAlign(LEFT);
-        text("You need " + fishLeft + " more" + units, 30, statsHeight / 1.5 );
-        text("Time left: " + countDown, width/6 * 5, statsHeight / 1.5);
+    fill(255,255,255,150);
+    rect(x, y, statsWidth, statsHeight);
+    fill(25,25,25);
+    textSize(25);
+    textAlign(LEFT);
+    text("You've caught " + caught + units, 30, statsHeight / 1.5 );
+    text("Your score is " + score, width/2, statsHeight / 1.5 );
+    text("Time left: " + countDown, width/6 * 5, statsHeight / 1.5);
+          println(levelCounter);
   }
   
   
@@ -65,17 +68,21 @@ class Stats {
     background(startImage);
   }
 
-  // EndScreen when the game ends. 
+  // EndScreen when the level ends. 
   void endScreen() {
+    nextLevel = levelCounter + 1;
     background(0);
     textAlign(CENTER);
-    text("EVERYONE'S A LOSER", width/2, height/2);
+    text("Start Level " + nextLevel, width/2, height/2);
   }
 
-  // Resets scores and timer before new game starts
+  // Resets timer before new level starts and add one more sea horse to make things harder
   void reset() {  
     countDown = 60;
     startTime = millis();
-    caught = 0;
+    levelCounter = levelCounter + 1;
+        for (int h = 0; h < 1; h++) {
+      seaHorses = (SeaHorse[]) append(seaHorses, new SeaHorse(seaHorsePic, floor(random(0, width)), floor(random(0, height))));
+    }
   }
 }

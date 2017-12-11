@@ -30,8 +30,6 @@ class PrizeFish {
 
   void update() {
 
-    
-
     // Check if it's too noisy
     level = mic.mix.level();
     // and if it is, the timer gets triggered
@@ -50,8 +48,8 @@ class PrizeFish {
    if (timerRunning) {
       timeElapsed = (millis() - startTime) / 1000;
       fishScared = 10 - timeElapsed;
-      // And fish starts swimming 5 times faster for 10 seconds
-      x += vx * 5;
+      // And fish starts swimming faster for 10 seconds
+      x += vx * 5 + 1;
     }
     
     
@@ -126,6 +124,7 @@ class PrizeFish {
         hero.onHook = false;
         // Number of fishes caught increases by 1
         caught = caught + 1;
+        stats.score = stats.score + 10 * stats.levelCounter;
         
         // Splash plays and rewinds to be ready to be played again
         caughtSound.play();
@@ -157,6 +156,5 @@ class PrizeFish {
       else {
         image(prizeFishPic,x,y);
       } 
-  println(fishScared);  
-}
+  }
 }   
