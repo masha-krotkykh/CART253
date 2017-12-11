@@ -41,6 +41,8 @@ PImage heroImg;
 // and for the backgrounds
 PImage backgroundImage;
 PImage startImage;
+PImage endImage;
+PImage loseImage;
 // Inset value so that fish doesn't get lost outside the window
 int inset = 10;
 
@@ -95,6 +97,8 @@ void setup() {
   // and backgrounds
   backgroundImage = loadImage("img/bg.jpg");
   startImage = loadImage("img/start.jpg");
+  endImage = loadImage("img/end.jpg");
+  loseImage = loadImage("img/lose.jpg");
 
   // Create 12  instances of prizeFish objects
   prizeFishes.add(new PrizeFish(prizeFishPics[0], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
@@ -141,6 +145,18 @@ void draw() {
   // endScreen displays when the game ends until the mouse is clicked
   else if(gameState == 2) {
     stats.endScreen();
+  }
+  
+  else if(gameState == 4) {
+    stats.winScreen();
+  }
+  
+  else if(gameState == 5) {
+    stats.superWinScreen();
+  }
+  
+  else if(gameState == 3) {
+    stats.loseScreen();
   }
   
   // gameScreen is the stage where the game executes
@@ -207,7 +223,7 @@ void gameScreen() {
 
 // When any key is pressed the new game starts.
 void keyPressed() {
-  if(gameState == 0 || gameState == 2)  {
+  if((keyCode != UP && keyCode != DOWN && keyCode != RIGHT && keyCode != LEFT) && (gameState == 0 || gameState == 2))  {
     if(gameState == 2) {
       stats.reset();
     }

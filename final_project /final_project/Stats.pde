@@ -15,6 +15,7 @@ class Stats {
   // Gets updated fromPrizeFish class every time a fish is caught depending on the level
   int score;
 
+  
   // Check if there is more than 1 fish caught to display units properly in singular or plural
   String checkQuantity() {
     if (caught == 1) {
@@ -33,7 +34,6 @@ class Stats {
   int timeElapsed;
   int countDown = 60;
   
- // Displaying how many fishes need to be caught 
   void update() {
       
     if (timerRunning) {
@@ -44,6 +44,18 @@ class Stats {
     if(countDown <= 0) {
       gameState = 2;
       timerRunning = false;
+    }
+    
+    if((levelCounter == 3 && countDown <= 0) || fishLeft <= 0) {
+      if(score < 100) {
+        gameState = 3;
+      }
+      else if(fishLeft <= 0) {
+        gameState = 5;
+      }
+      else {
+        gameState = 4;
+      }
     }
   }
   
@@ -57,11 +69,12 @@ class Stats {
     textSize(25);
     textAlign(LEFT);
     text("You've caught " + caught + units, 30, statsHeight / 1.5 );
-    text("Your score is " + score, width/2, statsHeight / 1.5 );
     text("Time left: " + countDown, width/6 * 5, statsHeight / 1.5);
+    textAlign(CENTER);
+     text("Your score is " + score, width/2, statsHeight / 1.5 );
           println(levelCounter);
   }
-  
+ 
   
   // startScreen before the game begins
   void startScreen() {
@@ -70,10 +83,22 @@ class Stats {
 
   // EndScreen when the level ends. 
   void endScreen() {
+    background(endImage);
     nextLevel = levelCounter + 1;
-    background(0);
     textAlign(CENTER);
-    text("Start Level " + nextLevel, width/2, height/2);
+    text("Current score is " + score, width/3, height/1.7); 
+    text("Start Level " + nextLevel, width/3, height/1.5);
+  }
+  void winScreen() {
+    text("Yay, you've won!", width/2, height/2);  
+  }
+  
+  void superWinScreen() {
+    text("Yay, you've won a lot!", width/2, height/2);  
+  }
+  
+  void loseScreen() {
+    background(loseImage);  
   }
 
   // Resets timer before new level starts and add one more sea horse to make things harder
