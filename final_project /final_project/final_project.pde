@@ -39,13 +39,13 @@ PImage seaHorsePic;
 // and for the hero
 PImage heroImg;
 // and for the backgrounds
-  PImage sunburst;
-  PImage backgroundImage;
-  PImage startImage;
-  PImage endImage;
-  PImage loseImage;
-  PImage winImage;
-  PImage superwinImage;
+PImage sunburst;
+PImage backgroundImage;
+PImage startImage;
+PImage endImage;
+PImage loseImage;
+PImage winImage;
+PImage superwinImage;
   
 // Inset value so that fish doesn't get lost outside the window
 int inset = 10;
@@ -58,6 +58,8 @@ boolean horseAttack = false;
 int gameState = 0;
 
 boolean newLevel = false;
+
+boolean timerRunning = false;
 
 void setup() {
   size(1200, 800);
@@ -149,6 +151,7 @@ void draw() {
   // startScreen displays before the game begins and until the mouse is clicked
   if(gameState == 0) {
     stats.startScreen();
+    timerRunning = false;
   }
 
   // endScreen displays when the game ends until the mouse is clicked
@@ -171,7 +174,6 @@ void draw() {
   // gameScreen is the stage where the game executes
   else {
     gameScreen();
-    stats.timerRunning = true;
   }
 }
 
@@ -180,7 +182,8 @@ void draw() {
 void gameScreen() {
   // Display background image  
   background(backgroundImage);
-
+    
+  timerRunning = true;
   // Update and display hero
   hero.update();
   hero.display();
@@ -214,9 +217,7 @@ void gameScreen() {
   // Check if nasty fish collides with hero and, if so, bring on the bubbles    
   for (int b = 0; b < bubbles.length; b++) {
     for (int n = 0; n < nastyFishes.length; n++) {
-      if (nastyFishes[n].collide(hero) == true) { 
-        
-        // Has to play sound when a nasty fish is hooked....
+      if (nastyFishes[n].collide(hero) == true) {        
         bubbles[b].update();
         bubbles[b].display();
       }  
@@ -235,6 +236,7 @@ void gameScreen() {
     stats.countDown = 60;
     stats.startTime = millis();
     stats.levelCounter = stats.levelCounter + 1;
+    
         for (int h = 0; h < 1; h++) {
       seaHorses = (SeaHorse[]) append(seaHorses, new SeaHorse(seaHorsePic, floor(random(0, width)), floor(random(0, height))));
     }
@@ -247,5 +249,6 @@ void keyPressed() {
       reset();
     }
     gameState = 1;
+    stats.startTime = millis();
   }
 }

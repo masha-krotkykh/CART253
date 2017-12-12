@@ -80,10 +80,11 @@ class NastyFish {
       if (collide == true) {
         x = hero.x;
         y = hero.y; 
+        // and the ominous sound plays
         penaltySound.play();
       }
        
-      
+      // Nasty fish only gets unhooked when dragged to the surface
       if (collide == true && y <= stats.statsHeight / 2) {
         y = y + height - stats.statsHeight/2;
         penaltySound.pause();

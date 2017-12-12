@@ -8,7 +8,6 @@ class Stats {
   int timeLeft;
   int fishToCatch = 12;
   String units;
-  boolean timerRunning = true;
   int levelCounter = 1;
   int fishLeft = fishToCatch - caught;
   int nextLevel;
@@ -86,6 +85,7 @@ class Stats {
   // startScreen before the game begins
   void startScreen() {
     background(startImage);
+    timerRunning = false;
   }
 
   // EndScreen when the level ends. 
@@ -105,6 +105,7 @@ class Stats {
     textAlign(CENTER);
     text("Current score is " + score, width / 3, height /1.7); 
     text("Start Level " + nextLevel, width / 3, height /1.5);
+    timerRunning = false;
   }
   
   // Screen for when player wins but not too much (is over 100 points but didn't catch all the fish)
