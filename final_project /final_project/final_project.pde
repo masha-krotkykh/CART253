@@ -39,10 +39,14 @@ PImage seaHorsePic;
 // and for the hero
 PImage heroImg;
 // and for the backgrounds
-PImage backgroundImage;
-PImage startImage;
-PImage endImage;
-PImage loseImage;
+  PImage sunburst;
+  PImage backgroundImage;
+  PImage startImage;
+  PImage endImage;
+  PImage loseImage;
+  PImage winImage;
+  PImage superwinImage;
+  
 // Inset value so that fish doesn't get lost outside the window
 int inset = 10;
 
@@ -57,7 +61,7 @@ boolean newLevel = false;
 
 void setup() {
   size(1200, 800);
-  
+  // Get minim
   minim = new Minim(this);
   
   // Get the mic
@@ -68,7 +72,7 @@ void setup() {
   penaltySound = minim.loadFile("sound/penalty.wav");
   backgroundSound = minim.loadFile("sound/theme.wav");
   // Play background sound
-  //backgroundSound.loop();
+  backgroundSound.loop();
 
 
   // Load good fish images
@@ -94,11 +98,15 @@ void setup() {
   // hero image
   heroImg = loadImage("img/hook.png");
   
-  // and backgrounds
+  // and all background images
+  sunburst = loadImage("img/sunburst.jpg");
   backgroundImage = loadImage("img/bg.jpg");
   startImage = loadImage("img/start.jpg");
-  endImage = loadImage("img/end.jpg");
-  loseImage = loadImage("img/lose.jpg");
+  endImage = loadImage("img/end.png");
+  loseImage = loadImage("img/lose.png");
+  winImage = loadImage("img/win.png");
+  superwinImage = loadImage("img/superwin.png");
+
 
   // Create 12  instances of prizeFish objects
   prizeFishes.add(new PrizeFish(prizeFishPics[0], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
@@ -120,6 +128,7 @@ void setup() {
   }
   
   // Create some sea horses
+  // One for now. New ones will be created with each new level via Stats class 
   for (int h = 0; h < 1; h++) {
     seaHorses[h] = new SeaHorse(seaHorsePic, floor(random(0, width)), floor(random(0, height)));
   }
@@ -221,11 +230,21 @@ void gameScreen() {
   stats.display();
 }
 
+  // Resets timer before new level starts and add one more sea horse to make things harder
+  void reset() {  
+    stats.countDown = 60;
+    stats.startTime = millis();
+    stats.levelCounter = stats.levelCounter + 1;
+        for (int h = 0; h < 1; h++) {
+      seaHorses = (SeaHorse[]) append(seaHorses, new SeaHorse(seaHorsePic, floor(random(0, width)), floor(random(0, height))));
+    }
+  }
+
 // When any key is pressed the new game starts.
 void keyPressed() {
   if((keyCode != UP && keyCode != DOWN && keyCode != RIGHT && keyCode != LEFT) && (gameState == 0 || gameState == 2))  {
     if(gameState == 2) {
-      stats.reset();
+      reset();
     }
     gameState = 1;
   }

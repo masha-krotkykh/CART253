@@ -63,16 +63,16 @@ class SeaHorse {
   // Displaying sea horses
   void display() {
     imageMode(CENTER);
-    image(seaHorsePic,x,y);
+    image(seaHorsePic, x, y);
   }  
-       // Checking if a sea horse collides with (attacks) the hook
+       // Check if a sea horse collides with (attacks) the hook
     boolean collide (Hero hero) {    
       boolean insideLeft = (x + horseWidth / 2 > hero.x - hero.WIDTH / 2);
       boolean insideRight = (x - horseWidth / 2 < hero.x + hero.WIDTH / 2);
       boolean insideTop = (y + horseHeight / 2 > hero.y - hero.HEIGHT / 2);
       boolean insideBottom = (y - horseHeight / 2 < hero.y + hero.HEIGHT / 2);
             
-   // and returning the value of the boolean
+   // and return the value of the boolean
       if (insideLeft && insideRight && insideTop && insideBottom) {
         horseAttack = true;
       }

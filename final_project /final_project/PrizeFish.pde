@@ -9,9 +9,13 @@ class PrizeFish {
   PImage prizeFishPic;
   float fishWidth = 300;
   int fishHeight = 50;
+  
+  // To check if collides with the hook
   boolean collide = false;
   float level;
   
+  // Not the level timer! 
+  // This is the timer that counts down from when fish gets scared of noise
   boolean timerRunning = false;
   int startTime = 0;
   int timeElapsed;
@@ -49,14 +53,15 @@ class PrizeFish {
       timeElapsed = (millis() - startTime) / 1000;
       fishScared = 10 - timeElapsed;
       // And fish starts swimming faster for 10 seconds
-      x += vx * 5 + 1;
+      x += vx * 5;
     }
     
     
     else {
     // Changes X-velocity randomly within small limits to give more organic movement
     // Moves forward by velocity
-      x += vx * random(0.2,1);
+    // Each level fishes move faster (X-velocity is multiplied by leve number)
+      x += vx * random(0.2,1) * stats.levelCounter;
       y += vy;
     }
     
@@ -84,6 +89,7 @@ class PrizeFish {
       // and returning the value of the boolean
       if (insideLeft && insideRight && insideTop && insideBottom && !hero.onHook && stats.countDown > 0) {
         collide = true;
+        // Chek if there is already a fish on the hook
         hero.onHook = true;
       }
       else {
@@ -120,10 +126,11 @@ class PrizeFish {
       if (collide == true && y <= stats.statsHeight / 2) {
         prizeFishes.remove(this);
         
-        // sets the value of something being on the hook to false
+        // sets the boolean of something being on the hook to false
         hero.onHook = false;
         // Number of fishes caught increases by 1
         caught = caught + 1;
+        // Every level each fish gives more points (10 * by level number)
         stats.score = stats.score + 10 * stats.levelCounter;
         
         // Splash plays and rewinds to be ready to be played again

@@ -11,6 +11,8 @@ class NastyFish {
   int fishHeight = 50;
   float tx = random(10,100);
   float ty = random(10,100);
+  
+  // To check if collides with the hook
   boolean collide = false;
   
   // Constructing a template for fish instances with given parameters
@@ -56,7 +58,7 @@ class NastyFish {
   }
    
    
-   // Checking if a fish collides with the hook and
+   // Check if a fish collides with the hook and
     boolean collide (Hero hero) {    
       boolean insideLeft = (x + fishWidth / 2 > hero.x - hero.WIDTH/2);
       boolean insideRight = (x < hero.x + hero.WIDTH/2);
