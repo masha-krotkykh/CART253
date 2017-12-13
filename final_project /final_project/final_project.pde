@@ -132,7 +132,7 @@ void setup() {
   // Create some sea horses
   // One for now. New ones will be created with each new level via Stats class 
   for (int h = 0; h < 1; h++) {
-    seaHorses[h] = new SeaHorse(seaHorsePic, floor(random(0, width)), floor(random(0, height)));
+    seaHorses[h] = new SeaHorse(seaHorsePic, floor(random(0, width)), floor(random(0, height)), 2, 0.025);
   }
   
   // Create bubbles
@@ -231,14 +231,14 @@ void gameScreen() {
   stats.display();
 }
 
-  // Resets timer before new level starts and add one more sea horse to make things harder
+  // Resets timer before new level starts and add one more sea horse that moves quicker to make things harder
   void reset() {  
     stats.countDown = 60;
     stats.startTime = millis();
     stats.levelCounter = stats.levelCounter + 1;
     
         for (int h = 0; h < 1; h++) {
-      seaHorses = (SeaHorse[]) append(seaHorses, new SeaHorse(seaHorsePic, floor(random(0, width)), floor(random(0, height))));
+      seaHorses = (SeaHorse[]) append(seaHorses, new SeaHorse(seaHorsePic, floor(random(0, width)), floor(random(0, height)), random(0,8), 0.015 * stats.levelCounter));
     }
   }
 

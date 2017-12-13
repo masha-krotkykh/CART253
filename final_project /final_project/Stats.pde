@@ -9,7 +9,7 @@ class Stats {
   int fishToCatch = 12;
   String units;
   int levelCounter = 1;
-  int fishLeft = fishToCatch - caught;
+  int fishLeft;
   int nextLevel;
   // Gets updated fromPrizeFish class every time a fish is caught depending on the level
   int score;
@@ -18,7 +18,7 @@ class Stats {
   
   // Check if there is more than 1 fish caught to display units properly in singular or plural
   String checkQuantity() {
-    if (caught == 1) {
+    if (fishLeft == 1) {
        units = " fish";
     }
     else {
@@ -47,9 +47,10 @@ class Stats {
       timerRunning = false;
     }
     
+     fishLeft = fishToCatch - caught;
     // After levl 3 ends check if the player lose or win
     // If the score is below 100 player lost and the game state is 3 (lose state)
-    if(levelCounter == 3 && countDown <= 0) {
+    if((levelCounter == 3 && countDown <= 0) || fishLeft <= 0) {
       if(score < 100) {
         gameState = 3;
       }
@@ -75,7 +76,7 @@ class Stats {
     fill(25,25,25);
     textSize(25);
     textAlign(LEFT);
-    text("You've caught " + caught + units, 30, statsHeight / 1.5 );
+    text(fishLeft + units + " left to catch", 30, statsHeight / 1.5 );
     text("Time left: " + countDown, width/6 * 5, statsHeight / 1.5);
     textAlign(CENTER);
     text("Your score is " + score, width/2, statsHeight / 1.5 );

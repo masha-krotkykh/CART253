@@ -6,17 +6,19 @@ class SeaHorse {
   int y;
   float vx;
   float vy;
-  float speed = random(0,8);
+  float speed;
   int horseWidth = 60;
   int horseHeight = 100;
   float tx = random(10,100);
   float ty = random(10,100);
-  float easing = 0.04;
+  float easing;
   
   // Constructing a template for sea horse instances with given parameters
-  SeaHorse(PImage tempSeaHorsePic, int tempX, int tempY) {
+  SeaHorse(PImage tempSeaHorsePic, int tempX, int tempY, float tempSpeed, float tempEasing) {
     x = tempX;
     y = tempY;
+    speed = tempSpeed;
+    easing = tempEasing;
     seaHorsePic = tempSeaHorsePic;
   }
   
