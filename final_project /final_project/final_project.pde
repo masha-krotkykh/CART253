@@ -33,6 +33,9 @@ AudioPlayer[] tones;
 AudioPlayer caughtSound;
 AudioPlayer penaltySound;
 AudioPlayer backgroundSound;
+AudioPlayer failSound;
+AudioPlayer winSound;
+AudioPlayer superwinSound;
 
 // We'll be using one object from the Hero class
 Hero hero;
@@ -63,6 +66,12 @@ PImage endImage;
 PImage loseImage;
 PImage winImage;
 PImage superwinImage;
+PImage watchImage;
+PImage caughtImage;
+PImage scoreImage;
+
+// Load a font
+PFont myFont;
   
 // Inset value so that fish doesn't get lost outside the window
 int inset = 10;
@@ -90,6 +99,10 @@ void setup() {
   caughtSound = minim.loadFile("sound/caught.wav");
   penaltySound = minim.loadFile("sound/penalty.wav");
   backgroundSound = minim.loadFile("sound/theme.wav");
+  failSound = minim.loadFile("sound/fail.wav");
+  winSound = minim.loadFile("sound/win.wav");
+  superwinSound = minim.loadFile("sound/superwin.wav");
+  
   // Play background sound
   backgroundSound.loop();
 
@@ -125,8 +138,13 @@ void setup() {
   loseImage = loadImage("img/lose.png");
   winImage = loadImage("img/win.png");
   superwinImage = loadImage("img/superwin.png");
-
-
+  watchImage = loadImage("img/watch.png");
+  caughtImage = loadImage("img/caught.png");
+  scoreImage = loadImage("img/score.png");
+  
+  // font
+  myFont = loadFont("fonts/AnsleyDisplay-Black-48.vlw");
+  
   // Create 12  instances of prizeFish objects
   prizeFishes.add(new PrizeFish(prizeFishPics[0], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));
   prizeFishes.add(new PrizeFish(prizeFishPics[1], random(0, width), random(inset, height - inset), floor(random(-9,9)), random(-1,1)));

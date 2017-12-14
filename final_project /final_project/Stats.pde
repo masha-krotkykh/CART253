@@ -48,9 +48,11 @@ class Stats {
     }
     
      fishLeft = fishToCatch - caught;
-    // After levl 3 ends check if the player lose or win
+    // After levl 3 ends check if the player lose or win and stop all current sounds
     // If the score is below 100 player lost and the game state is 3 (lose state)
     if((levelCounter == 3 && countDown <= 0) || fishLeft <= 0) {
+      backgroundSound.close();
+      penaltySound.close();
       if(score < 100) {
         gameState = 3;
       }
@@ -74,12 +76,16 @@ class Stats {
     fill(255,255,255,150);
     rect(x, y, statsWidth, statsHeight);
     fill(25,25,25);
+    image(watchImage, width - 100, statsHeight / 2);
+    image(caughtImage, 50, statsHeight / 2);
+    image(scoreImage, width / 2 - 20, statsHeight / 2);
+    textFont(myFont);
     textSize(25);
     textAlign(LEFT);
-    text(fishLeft + units + " left to catch", 30, statsHeight / 1.5 );
-    text("Time left: " + countDown, width/6 * 5, statsHeight / 1.5);
+    text(fishLeft + units, 100, statsHeight / 1.5 );
+    text(countDown, width - 60, statsHeight / 1.5);
     textAlign(CENTER);
-    text("Your score is " + score, width/2, statsHeight / 1.5 );
+    text(score, width / 2 + 20, statsHeight / 1.5 );
   }
  
   
@@ -104,6 +110,7 @@ class Stats {
     // and text with current score and level 
     nextLevel = levelCounter + 1;
     textAlign(CENTER);
+    textSize(18);
     text("Current score is " + score, width / 3, height /1.7); 
     text("Start Level " + nextLevel, width / 3, height /1.5);
     timerRunning = false;
@@ -123,7 +130,8 @@ class Stats {
     image(winImage, width / 2, height / 2);
     // and text with total game score
     textAlign(CENTER);
-    text("Your total score is " + score, width / 1.2, height / 4); 
+    text("Your total score is " + score, width / 1.3, height / 5); 
+    winSound.play();
   }
   
   // Screen for when player wins everything
@@ -138,6 +146,7 @@ class Stats {
     popMatrix();
     // Add an image
     image(superwinImage, width / 2, height / 2);  
+    superwinSound.play();
   }
   
   // Screen for when player scores less than 100 points total after 3 levels
@@ -152,5 +161,6 @@ class Stats {
     popMatrix();
     // Add an image
     image(loseImage, width / 2, height / 2);
+    failSound.play();
   }
 }
