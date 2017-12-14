@@ -1,8 +1,25 @@
-
-
-
 // Simple fishing game, where the good fish is to be caught with a hook, and the bad fish is to be avoided
-// The game is against the time and all 10 good fishes need to be caught within 1 minute
+
+// ARTIST'S STATEMENT
+// In this project I was trying to explore as many topics covered during the course as possible (where it was appropriate). 
+// Although the game is fairly simple, I am quite pleased with the result since I've managed to make things work exactly the way I wanted them to. 
+// Using array lists helped me a great deal to make the right fish disappear from the game at the right time. 
+// I also revisited the append() function for the arrays to add new instances of sea horses to the game with each new level. 
+// Although I must admit that I still don't completely understand the logic of a for loop, I have learned to implement it sensibly and functionally so it works the way it has to.
+// Also I was able to implement rotation both for flipping images of fishes when their velocity is negative (instead of replacing the images each time like I did in my midterm), 
+// and for the background using theta rotation.
+// I explored microphone input to be able to "scare" the fish, so now when the noise level is too high, my fishes start swimming much faster for a certain period of time. 
+// Artistically I was excited about exploring the clash of victorian aesthetics with gaming environment which, in my, opinion, worked nicely. 
+// Usually when games are stylized to look like they are set in Victorian epoch, they still look pretty modern. 
+// In this case illustrations were used, modified and collaged to give the game look of a vintage product label. 
+// It is nice to know that new technology doesn't necessarily deny any artistic standards that are sometimes believed to be extinct but, on the contrary, helps to preserve, adapt, and enhance them in a completely new way.
+// I chose this subject because I generally find fishing very relaxing. 
+// In this case though I tried to make it as stressful as possible: the game is against the clock and there are several obstacles 
+// (like nasty fishes the slow the hero's movement and the sea horses that try to "save" hooked fishes) and difficulty level increases on each stage (fish moves faster, number of sea horses increases and their speed as well).
+// There are three possible options to end the game: total victory - with all fishes caught, "sorta victory" - when the score is 100 or above and defeat - when the score is below 100.
+// Every level fish brings the player more points (10 in level 1, 20 in level 2, and 30 in level 3) but it is also more difficult to play each next level, so it's up to the player to choose the strategy. 
+// For me personally the most interesting part of the project was actually seeing the progress since the beginning of the course. Being able to piece together most topics covered in class and implementing them 
+// to write from scratch a functioning thing is an awesome feeling.
 
 // import Minim library for sound
 import ddf.minim.*;
